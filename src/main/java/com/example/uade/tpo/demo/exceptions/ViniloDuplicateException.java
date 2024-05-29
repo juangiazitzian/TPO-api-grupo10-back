@@ -1,4 +1,4 @@
-package com.example.uade.tpo.demo.exceptiones;
+package com.example.uade.tpo.demo.exceptions;
 
 public class ViniloDuplicateException extends Exception {
     public ViniloDuplicateException() {
