@@ -34,6 +34,9 @@ public class Cuenta {
     private int discount;
 
     
+    public Cuenta() {
+	}
+    
 	public Cuenta(String name, String lastName, String username, String password, int discount) {
 		this.name = name;
 		this.lastName = lastName;

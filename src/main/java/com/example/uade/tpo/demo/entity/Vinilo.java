@@ -29,6 +29,8 @@ public class Vinilo {
     @Column
     private String genero;
 
+    public Vinilo() {
+    }
     
     public Vinilo(String title, String subtitle, String image, Double price, String genero) {
         this.title = title;

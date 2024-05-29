@@ -20,7 +20,7 @@ public class ViniloController {
     @Autowired
     private ViniloService viniloService;
 
-    @GetMapping
+    @GetMapping("/vinilos")
     public ResponseEntity<Page<Vinilo>> getVinilos(@RequestParam(required = false) Integer page,
     												@RequestParam(required = false) Integer size) {
         Page<Vinilo> vinilos = viniloService.getVinilos(PageRequest.of(page, size));
@@ -39,7 +39,7 @@ public class ViniloController {
         return ResponseEntity.ok().body(vinilos);
     }
 
-    @PostMapping
+    @PostMapping("/add-vinilo")
     public ResponseEntity<Vinilo> createVinilo(@RequestBody Vinilo vinilo) {
         try {
             Vinilo newVinilo = viniloService.newVinilo(

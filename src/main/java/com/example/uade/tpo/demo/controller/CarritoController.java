@@ -22,7 +22,7 @@ public class CarritoController {
         return carrito.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("/add-carrito")
     public ResponseEntity<Carrito> createCarrito(@RequestBody Carrito carrito) {
         try {
             Carrito newcarrito = carritoService.newCarrito(

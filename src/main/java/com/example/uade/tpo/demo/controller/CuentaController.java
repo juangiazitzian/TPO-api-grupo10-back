@@ -19,7 +19,7 @@ public class CuentaController {
     @Autowired
     private CuentaService cuentaService;
 
-    @GetMapping
+    @GetMapping("/cuentas")
     public ResponseEntity<Page<Cuenta>> getCuentas(@RequestParam(required = false) Integer page,
     												@RequestParam(required = false) Integer size) {
         Page<Cuenta> cuentas = cuentaService.getCuentas(PageRequest.of(page, size));
@@ -32,7 +32,7 @@ public class CuentaController {
         return cuenta.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("add-cuenta")
     public ResponseEntity<Cuenta> createCuenta(@RequestBody Cuenta cuenta) {
         try {
             Cuenta newcuenta = cuentaService.newCuenta(

@@ -31,5 +31,4 @@ public class CarritoServiceImpl implements CarritoService {
     	Carrito newCarrito = new Carrito(cart);
             return carritoRepository.save(newCarrito);
         }
-    }
 }
