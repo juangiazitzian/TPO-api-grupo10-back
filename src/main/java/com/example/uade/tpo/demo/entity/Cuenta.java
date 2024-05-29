@@ -34,14 +34,12 @@ public class Cuenta {
     private int discount;
 
     
-	public Cuenta(Long id, String name, String lastName, String username, String password, boolean isAdmin,
-			int discount) {
-		this.id = id;
+	public Cuenta(String name, String lastName, String username, String password, int discount) {
 		this.name = name;
 		this.lastName = lastName;
 		this.username = username;
 		this.password = password;
-		this.isAdmin = isAdmin;
+		this.isAdmin = false;
 		this.discount = discount;
 	}
 
