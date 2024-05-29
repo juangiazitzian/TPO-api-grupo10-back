@@ -1,31 +1,22 @@
 package com.example.uade.tpo.demo.service;
 
-import com.example.vinylstore.entity.Vinyl;
-import com.example.vinylstore.repository.VinylRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class viniloService {
-    
-    @Autowired
-    private VinylRepository vinylRepository;
+import java.util.Optional;
 
-    public List<Vinyl> getAllVinyls() {
-        return vinylRepository.findAll();
-    }
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
-    public Vinyl getVinylById(Long id) {
-        return vinylRepository.findById(id).orElse(null);
-    }
+import com.example.uade.tpo.demo.exceptiones.ViniloDuplicateException;
+import com.example.uade.tpo.demo.repository.entity.Vinilo;
 
-    public Vinyl saveVinyl(Vinyl vinyl) {
-        return vinylRepository.save(vinyl);
-    }
+public interface ViniloService {
+    public Page<Vinilo> getVinilos(PageRequest pageRequest);
 
-    public void deleteVinyl(Long id) {
-        vinylRepository.deleteById(id);
-    }
+    public Optional<Vinilo> getViniloById(Long viniloId);
+
+    public Vinilo createVinilo(String title, String subtitle, String imageSrc, Double price, String genero) throws ViniloDuplicateException;
 }

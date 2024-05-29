@@ -1,14 +1,12 @@
 package com.example.uade.tpo.demo.repository;
 
+import com.example.uade.tpo.demo.repository.entity.Vinilo;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import com.example.uade.tpo.demo.repository.entity.vinilo;
-
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-
-
-public interface viniloRepository extends JpaRepository<Vinyl, Long> {
+@Repository
+public interface ViniloRepository extends JpaRepository<Vinyl, Long> {
+    List<Vinilo> findByTitle(String title);
 }
