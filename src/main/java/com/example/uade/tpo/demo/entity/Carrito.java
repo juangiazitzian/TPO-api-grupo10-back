@@ -10,11 +10,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MapKeyColumn;
+import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
 import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "carritos")
 public class Carrito {
 
 	@Id
