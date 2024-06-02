@@ -20,9 +20,9 @@ public class ViniloController {
     @Autowired
     private ViniloService viniloService;
 
-    @GetMapping("/vinilos")
-    public ResponseEntity<Page<Vinilo>> getVinilos(@RequestParam(required = false) Integer page,
-    												@RequestParam(required = false) Integer size) {
+    @GetMapping
+    public ResponseEntity<Page<Vinilo>> getVinilos(@RequestParam(defaultValue = "0") Integer page,
+                                                   @RequestParam(defaultValue = "10") Integer size) {
         Page<Vinilo> vinilos = viniloService.getVinilos(PageRequest.of(page, size));
         return ResponseEntity.ok().body(vinilos);
     }
@@ -40,14 +40,10 @@ public class ViniloController {
     }
 
     @PostMapping("/add-vinilo")
-    public ResponseEntity<Vinilo> createVinilo(@RequestBody Vinilo vinilo) {
+    public ResponseEntity<Vinilo> createVinilo(@RequestParam String title, String subtitle, String image, Double price, String genero) {
         try {
             Vinilo newVinilo = viniloService.newVinilo(
-                    vinilo.getTitle(),
-                    vinilo.getSubtitle(),
-                    vinilo.getImage(),
-                    vinilo.getPrice(),
-                    vinilo.getGenero()
+            		title, subtitle, image, price, genero
             );
             return ResponseEntity.status(HttpStatus.CREATED).body(newVinilo);
         } catch (ViniloDuplicateException e) {
