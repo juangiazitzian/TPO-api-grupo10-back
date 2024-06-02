@@ -19,7 +19,7 @@ public class CuentaController {
     @Autowired
     private CuentaService cuentaService;
 
-    @GetMapping("/cuentas")
+    @GetMapping
     public ResponseEntity<Page<Cuenta>> getCuentas(@RequestParam(required = false) Integer page,
     												@RequestParam(required = false) Integer size) {
         Page<Cuenta> cuentas = cuentaService.getCuentas(PageRequest.of(page, size));
