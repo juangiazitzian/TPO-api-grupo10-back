@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -23,20 +25,10 @@ public class PedidoController {
     }
 
     @PostMapping("/add-pedido")
-    public ResponseEntity<Pedido> createPedido(@RequestBody Pedido pedido) {
+    public ResponseEntity<Pedido> createPedido(@RequestParam Map<Integer, Integer> cart, String userId, Date date, boolean delivery, String adress,
+			Date deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
         try {
-            Pedido newPedido = pedidoService.newPedido(
-                    pedido.getCart(),
-                    pedido.getUserId(),
-                    pedido.getDate(),
-                    pedido.isDelivery(),
-                    pedido.getAdress(),
-                    pedido.getDeliveryDate(),
-                    pedido.isEntregado(),
-                    pedido.getSubtotal(),
-                    pedido.getDescuento(),
-                    pedido.getTotal()
-            );
+            Pedido newPedido = pedidoService.newPedido(cart, userId, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total);
             return ResponseEntity.status(HttpStatus.CREATED).body(newPedido);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
