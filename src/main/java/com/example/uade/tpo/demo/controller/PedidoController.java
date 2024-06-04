@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -25,7 +24,7 @@ public class PedidoController {
     }
 
     @PostMapping("/add-pedido")
-    public ResponseEntity<Pedido> createPedido(@RequestParam Map<Integer, Integer> cart, String userId, Date date, boolean delivery, String adress,
+    public ResponseEntity<Pedido> createPedido(@RequestParam String cart, String userId, Date date, boolean delivery, String adress,
 			Date deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
         try {
             Pedido newPedido = pedidoService.newPedido(cart, userId, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total);

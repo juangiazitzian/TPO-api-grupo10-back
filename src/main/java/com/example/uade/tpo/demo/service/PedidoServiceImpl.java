@@ -1,7 +1,6 @@
 package com.example.uade.tpo.demo.service;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,7 +27,7 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public Pedido newPedido(Map<Integer, Integer> cart, String userId, Date date, boolean delivery, String adress,
+    public Pedido newPedido(String cart, String userId, Date date, boolean delivery, String adress,
 			Date deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
     	Pedido newPedido = new Pedido(cart, userId, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total);
             return pedidoRepository.save(newPedido);

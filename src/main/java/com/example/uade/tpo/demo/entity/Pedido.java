@@ -24,11 +24,8 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-	@ElementCollection
-	@CollectionTable(name = "cart_items", joinColumns = @JoinColumn(name = "carrito_id"))
-	@MapKeyColumn(name = "item_key", nullable = false)
-	@Column(name = "item_value", nullable = false)
-	private Map<Integer, Integer> cart;
+	@Column(nullable = false)
+	private String cart;
 	
 	@Column(nullable = false)
 	private String userId;
@@ -39,6 +36,7 @@ public class Pedido {
 	@Column(nullable = false)
 	private boolean delivery;
 	
+	@Column
 	private String adress;
 	
 	@Column(nullable = false)
@@ -60,7 +58,7 @@ public class Pedido {
 	public Pedido() {
 	}
 	
-	public Pedido(Map<Integer, Integer> cart, String userId, Date date, boolean delivery, String adress,
+	public Pedido(String cart, String userId, Date date, boolean delivery, String adress,
 			Date deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
 		this.cart = cart;
 		this.userId = userId;
@@ -77,7 +75,7 @@ public class Pedido {
 	public Long getId() {
 		return id;
 	}
-	public Map<Integer, Integer> getCart() {
+	public String getCart() {
 		return cart;
 	}
 	public String getUserId() {
@@ -108,7 +106,7 @@ public class Pedido {
 		return total;
 	}
 
-	public void setCart(Map<Integer, Integer> cart) {
+	public void setCart(String cart) {
 		this.cart = cart;
 	}
 	public void setUserId(String userId) {
