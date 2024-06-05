@@ -20,8 +20,8 @@ public class CuentaController {
     private CuentaService cuentaService;
 
     @GetMapping
-    public ResponseEntity<Page<Cuenta>> getCuentas(@RequestParam(required = false) Integer page,
-    												@RequestParam(required = false) Integer size) {
+    public ResponseEntity<Page<Cuenta>> getCuentas(@RequestParam(defaultValue = "0") Integer page,
+    												@RequestParam(defaultValue = "10") Integer size) {
         Page<Cuenta> cuentas = cuentaService.getCuentas(PageRequest.of(page, size));
         return ResponseEntity.ok().body(cuentas);
     }

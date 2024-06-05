@@ -41,38 +41,5 @@ public class Vinilo {
     }
 
     
-	public Long getId() {
-		return id;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public String getSubtitle() {
-		return subtitle;
-	}
-	public String getImage() {
-		return image;
-	}
-	public Double getPrice() {
-		return price;
-	}
-	public String getGenero() {
-		return genero;
-	}
 	
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public void setSubtitle(String subtitle) {
-		this.subtitle = subtitle;
-	}
-	public void setImage(String image) {
-		this.image = image;
-	}
-	public void setPrice(Double price) {
-		this.price = price;
-	}
-	public void setGenero(String genero) {
-		this.genero = genero;
-	}
 }
