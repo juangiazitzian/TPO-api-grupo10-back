@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Data
@@ -53,83 +54,31 @@ public class Pedido {
 	
 	@Column(nullable = false)
 	private double total;
+
+    @ManyToOne
+    @JoinColumn(name = "userId") // Nombre de la columna que representa la clave externa
+    private Cuenta cuenta;
 	
 	
 	public Pedido() {
 	}
 	
-	public Pedido(String cart, String userId, Date date, boolean delivery, String adress,
-			Date deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
-		this.cart = cart;
-		this.userId = userId;
-		this.date = date;
-		this.delivery = delivery;
-		this.adress = adress;
-		this.deliveryDate = deliveryDate;
-		this.entregado = entregado;
-		this.subtotal = subtotal;
-		this.descuento = descuento;
-		this.total = total;
+    public Pedido(Cuenta cuenta, String cart, String userId, Date date, boolean delivery, String adress,
+    Date deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
+        this.cuenta = cuenta;
+        this.cart = cart;
+        this.userId = userId;
+        this.date = date;
+        this.delivery = delivery;
+        this.adress = adress;
+        this.deliveryDate = deliveryDate;
+        this.entregado = entregado;
+        this.subtotal = subtotal;
+        this.descuento = descuento;
+        this.total = total;
 	}
 
-	public Long getId() {
-		return id;
-	}
-	public String getCart() {
-		return cart;
-	}
-	public String getUserId() {
-		return userId;
-	}
-	public Date getDate() {
-		return date;
-	}
-	public boolean isDelivery() {
-		return delivery;
-	}
-	public String getAdress() {
-		return adress;
-	}
-	public Date getDeliveryDate() {
-		return deliveryDate;
-	}
-	public boolean isEntregado() {
-		return entregado;
-	}
-	public double getSubtotal() {
-		return subtotal;
-	}
-	public double getDescuento() {
-		return descuento;
-	}
-	public double getTotal() {
-		return total;
-	}
-
-	public void setCart(String cart) {
-		this.cart = cart;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	public void setDate(Date date) {
-		this.date = date;
-	}
-	public void setDelivery(boolean delivery) {
-		this.delivery = delivery;
-	}
-	public void setAdress(String adress) {
-		this.adress = adress;
-	}
-	public void setDeliveryDate(Date deliveryDate) {
-		this.deliveryDate = deliveryDate;
-	}
-	public void setEntregado(boolean entregado) {
-		this.entregado = entregado;
-	}
-	public void setTotal(double total) {
-		this.total = total;
-	}
+	
 
 }
 
