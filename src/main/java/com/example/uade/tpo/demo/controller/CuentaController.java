@@ -1,8 +1,8 @@
 package com.example.uade.tpo.demo.controller;
 
 import com.example.uade.tpo.demo.entity.Cuenta;
-import com.example.uade.tpo.demo.entity.Pedido;
 import com.example.uade.tpo.demo.exceptions.CuentaDuplicateException;
+import com.example.uade.tpo.demo.exceptions.CuentaNotFoundException;
 import com.example.uade.tpo.demo.service.CuentaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -49,4 +48,30 @@ public class CuentaController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
+    
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Cuenta> updateCuenta(@PathVariable Long id,
+                                                @RequestParam String name,
+                                                @RequestParam String lastName,
+                                                @RequestParam String username,
+                                                @RequestParam String password,
+                                                @RequestParam int discount) {
+        try {
+            Cuenta updatedCuenta = cuentaService.updateCuenta(id, name, lastName, username, password, discount);
+            return ResponseEntity.ok(updatedCuenta);
+        } catch (CuentaNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteCuenta(@PathVariable Long id) {
+        try {
+            cuentaService.deleteCuenta(id);
+            return ResponseEntity.noContent().build();
+        } catch (CuentaNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
 }

@@ -7,8 +7,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.entity.Vinilo;
+import com.example.uade.tpo.demo.entity.Vinilo;
+import com.example.uade.tpo.demo.exceptions.ViniloNotFoundException;
 import com.example.uade.tpo.demo.exceptions.ViniloDuplicateException;
+import com.example.uade.tpo.demo.exceptions.ViniloNotFoundException;
 import com.example.uade.tpo.demo.repository.ViniloRepository;
 
 @Service
@@ -39,5 +43,31 @@ public class ViniloServiceImpl implements ViniloService {
             return viniloRepository.save(newVinilo);
         }
         throw new ViniloDuplicateException();
+    }
+    
+    
+    @Override
+    public Vinilo updateVinilo(Long id, String title, String subtitle, String image, Double price, String genero) throws ViniloNotFoundException {
+        Optional<Vinilo> optionalVinilo = viniloRepository.findById(id);
+        if (optionalVinilo.isPresent()) {
+            Vinilo vinilo = optionalVinilo.get();
+            vinilo.setTitle(title);
+            vinilo.setSubtitle(subtitle);
+            vinilo.setImage(image);
+            vinilo.setPrice(price);
+            vinilo.setGenero(genero);
+            return viniloRepository.save(vinilo);
+        } else {
+            throw new ViniloNotFoundException();
+        }
+    }
+    
+    @Override
+    public void deleteVinilo(Long id) throws ViniloNotFoundException {
+        if (viniloRepository.existsById(id)) {
+            viniloRepository.deleteById(id);
+        } else {
+            throw new ViniloNotFoundException();
+        }
     }
 }

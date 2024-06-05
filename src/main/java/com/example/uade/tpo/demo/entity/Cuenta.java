@@ -47,8 +47,5 @@ public class Cuenta {
 		this.isAdmin = false;
 		this.discount = discount;
 	}
-
-	
-	
 }
 

@@ -2,6 +2,9 @@ package com.example.uade.tpo.demo.controller;
 
 import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.entity.Pedido;
+import com.example.uade.tpo.demo.entity.Pedido;
+import com.example.uade.tpo.demo.exceptions.CuentaNotFoundException;
+import com.example.uade.tpo.demo.exceptions.PedidoNotFoundException;
 import com.example.uade.tpo.demo.service.PedidoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +56,38 @@ public class PedidoController {
             return ResponseEntity.status(HttpStatus.CREATED).body(newPedido);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
+
+    @PutMapping("/update/{id}")
+        public ResponseEntity<Pedido> updatePedido(@PathVariable Long id,
+                                                @RequestParam String cart,
+                                                @RequestParam Cuenta cuenta,
+                                                @RequestParam String date,
+                                                @RequestParam boolean delivery,
+                                                @RequestParam String adress,
+                                                @RequestParam String deliveryDate,
+                                                @RequestParam boolean entregado,
+                                                @RequestParam double subtotal,
+                                                @RequestParam double descuento,
+                                                @RequestParam double total) {
+        try {
+            Pedido updatedPedido = pedidoService.updatePedido(id, cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total);
+            return ResponseEntity.ok(updatedPedido);
+        } catch (PedidoNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deletePedido(@PathVariable Long id) {
+        try {
+            pedidoService.deletePedido(id);
+            return ResponseEntity.noContent().build();
+        } catch (PedidoNotFoundException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 }

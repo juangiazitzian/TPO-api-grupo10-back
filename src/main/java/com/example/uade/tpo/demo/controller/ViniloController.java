@@ -1,6 +1,7 @@
 package com.example.uade.tpo.demo.controller;
 
 import com.example.uade.tpo.demo.entity.Vinilo;
+import com.example.uade.tpo.demo.exceptions.ViniloNotFoundException;
 import com.example.uade.tpo.demo.exceptions.ViniloDuplicateException;
 import com.example.uade.tpo.demo.service.ViniloService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,33 @@ public class ViniloController {
             return ResponseEntity.status(HttpStatus.CREATED).body(newVinilo);
         } catch (ViniloDuplicateException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
+
+    @PutMapping("/update/{id}")
+        public ResponseEntity<Vinilo> updateVinilo(@PathVariable Long id,
+                                                @RequestParam String title,
+                                                @RequestParam String subtitle,
+                                                @RequestParam String image,
+                                                @RequestParam Double price,
+                                                @RequestParam String genero) {
+        try {
+            Vinilo updatedVinilo = viniloService.updateVinilo(id, title, subtitle, image, price, genero);
+            return ResponseEntity.ok(updatedVinilo);
+        } catch (ViniloNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteVinilo(@PathVariable Long id) {
+        try {
+            viniloService.deleteVinilo(id);
+            return ResponseEntity.noContent().build();
+        } catch (ViniloNotFoundException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 }
