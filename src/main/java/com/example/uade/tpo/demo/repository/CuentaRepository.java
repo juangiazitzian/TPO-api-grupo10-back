@@ -9,5 +9,5 @@ import com.example.uade.tpo.demo.entity.Cuenta;
 
 @Repository
 public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
-	Optional<Cuenta> findByUsername(String username);
+    Optional<Cuenta> findByUsername(String username);
 }

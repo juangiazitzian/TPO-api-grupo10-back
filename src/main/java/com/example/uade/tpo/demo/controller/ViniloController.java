@@ -27,14 +27,14 @@ public class ViniloController {
         return ResponseEntity.ok().body(vinilos);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Vinilo> getViniloById(@PathVariable Long id) {
         Optional<Vinilo> vinilo = viniloService.getViniloById(id);
         return vinilo.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<Vinilo>> getViniloByTitulo(@RequestParam String title) {
+    @GetMapping("/titulo/{title}")
+    public ResponseEntity<List<Vinilo>> getViniloByTitulo(@PathVariable String title) {
         List<Vinilo> vinilos = viniloService.getViniloByTitulo(title);
         return ResponseEntity.ok().body(vinilos);
     }

@@ -20,13 +20,13 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Pedido> getPedidoById(@PathVariable Long id) {
         Optional<Pedido> pedido = pedidoService.getPedidoById(id);
         return pedido.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
     
-    @GetMapping("/user/{id}")
+    @GetMapping("/cuenta/{id}")
     public ResponseEntity<List<Pedido>> getPedidosByUserId(@PathVariable Long id) {
         List<Pedido> pedidos = pedidoService.getPedidosByUserId(id);
         if (pedidos.isEmpty()) {

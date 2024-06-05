@@ -23,7 +23,7 @@ public class Cuenta {
     @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
@@ -41,7 +41,8 @@ public class Cuenta {
     public Cuenta() {
 	}
     
-	public Cuenta(String name, String lastName, String username, String password, int discount) {
+	public Cuenta(String name, String lastName, String username, String password, int discount, List<Pedido> pedidos) {
+		this.pedidos = pedidos;
 		this.name = name;
 		this.lastName = lastName;
 		this.username = username;
