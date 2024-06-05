@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.entity.Pedido;
 
 public interface PedidoService {
@@ -12,6 +13,6 @@ public interface PedidoService {
 
     Optional<Pedido> getPedidoById(Long id);
 
-    Pedido newPedido(String cart, String userId, Date date, boolean delivery, String adress,
+    Pedido newPedido(String cart, Cuenta cuenta, Date date, boolean delivery, String adress,
 			Date deliveryDate, boolean entregado, double subtotal, double descuento, double total);
 }

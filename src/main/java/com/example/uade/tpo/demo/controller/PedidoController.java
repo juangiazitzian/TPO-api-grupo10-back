@@ -1,5 +1,6 @@
 package com.example.uade.tpo.demo.controller;
 
+import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.entity.Pedido;
 import com.example.uade.tpo.demo.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,10 @@ public class PedidoController {
     }
 
     @PostMapping("/add-pedido")
-    public ResponseEntity<Pedido> createPedido(@RequestParam String cart, String userId, Date date, boolean delivery, String adress,
+    public ResponseEntity<Pedido> createPedido(@RequestParam String cart, Cuenta cuenta, Date date, boolean delivery, String adress,
 			Date deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
         try {
-            Pedido newPedido = pedidoService.newPedido(cart, userId, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total);
+            Pedido newPedido = pedidoService.newPedido(cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total);
             return ResponseEntity.status(HttpStatus.CREATED).body(newPedido);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
