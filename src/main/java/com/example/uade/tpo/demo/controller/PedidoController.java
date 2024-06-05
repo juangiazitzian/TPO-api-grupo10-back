@@ -5,6 +5,8 @@ import com.example.uade.tpo.demo.entity.Pedido;
 import com.example.uade.tpo.demo.service.PedidoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,13 @@ public class PedidoController {
 
     @Autowired
     private PedidoService pedidoService;
+
+    @GetMapping
+    public ResponseEntity<Page<Pedido>> getPedidos(@RequestParam(defaultValue = "0") Integer page,
+    												@RequestParam(defaultValue = "10") Integer size) {
+        Page<Pedido> pedidos = pedidoService.getPedidos(PageRequest.of(page, size));
+        return ResponseEntity.ok().body(pedidos);
+    }
 
     @GetMapping("/id/{id}")
     public ResponseEntity<Pedido> getPedidoById(@PathVariable Long id) {
@@ -37,8 +46,8 @@ public class PedidoController {
     }
 
     @PostMapping("/add-pedido")
-    public ResponseEntity<Pedido> createPedido(@RequestParam String cart, Cuenta cuenta, Date date, boolean delivery, String adress,
-			Date deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
+    public ResponseEntity<Pedido> createPedido(@RequestParam String cart, Cuenta cuenta, String date, boolean delivery, String adress,
+			String deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
         try {
             Pedido newPedido = pedidoService.newPedido(cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total);
             return ResponseEntity.status(HttpStatus.CREATED).body(newPedido);

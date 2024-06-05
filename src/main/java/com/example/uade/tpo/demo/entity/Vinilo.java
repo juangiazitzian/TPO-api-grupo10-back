@@ -39,7 +39,7 @@ public class Vinilo {
         this.price = price;
         this.genero = genero;
     }
-
+    
     
 	
 }

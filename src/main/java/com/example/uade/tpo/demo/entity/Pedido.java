@@ -29,7 +29,7 @@ public class Pedido {
     private Cuenta cuenta;
 	
 	@Column(nullable = false)
-	private Date date;
+	private String date;
 	
 	@Column(nullable = false)
 	private boolean delivery;
@@ -38,7 +38,7 @@ public class Pedido {
 	private String adress;
 	
 	@Column(nullable = false)
-	private Date deliveryDate;
+	private String deliveryDate;
 
 	@Column(nullable = false)
 	private boolean entregado;
@@ -55,8 +55,8 @@ public class Pedido {
 	public Pedido() {
 	}
 	
-    public Pedido(String cart, Cuenta cuenta, Date date, boolean delivery, String adress,
-    Date deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
+    public Pedido(String cart, Cuenta cuenta, String date, boolean delivery, String adress,
+    String deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
         this.cuenta = cuenta;
         this.cart = cart;
         this.date = date;

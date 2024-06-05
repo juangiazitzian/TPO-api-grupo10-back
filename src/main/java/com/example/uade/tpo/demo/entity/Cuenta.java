@@ -35,14 +35,11 @@ public class Cuenta {
     @Column
     private int discount;
 
-	@OneToMany(mappedBy = "cuenta")
-    private List<Pedido> pedidos;
     
     public Cuenta() {
 	}
     
-	public Cuenta(String name, String lastName, String username, String password, int discount, List<Pedido> pedidos) {
-		this.pedidos = pedidos;
+	public Cuenta(String name, String lastName, String username, String password, int discount) {
 		this.name = name;
 		this.lastName = lastName;
 		this.username = username;

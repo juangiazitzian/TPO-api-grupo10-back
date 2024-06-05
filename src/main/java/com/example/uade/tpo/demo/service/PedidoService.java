@@ -16,6 +16,6 @@ public interface PedidoService {
     
     List<Pedido> getPedidosByUserId(Long id);
 
-    Pedido newPedido(String cart, Cuenta cuenta, Date date, boolean delivery, String adress,
-			Date deliveryDate, boolean entregado, double subtotal, double descuento, double total);
+    Pedido newPedido(String cart, Cuenta cuenta, String date, boolean delivery, String adress,
+    		String deliveryDate, boolean entregado, double subtotal, double descuento, double total);
 }

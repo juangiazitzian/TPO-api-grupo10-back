@@ -16,5 +16,5 @@ public interface CuentaService {
     
     Optional<Cuenta> getCuentaByUsername(String username);
 
-    Cuenta newCuenta(String name, String lastName, String username, String password, int discount, List<Pedido> pedidos) throws CuentaDuplicateException;
+    Cuenta newCuenta(String name, String lastName, String username, String password, int discount) throws CuentaDuplicateException;
 }

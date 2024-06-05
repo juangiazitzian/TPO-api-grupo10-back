@@ -34,8 +34,8 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public Pedido newPedido(String cart, Cuenta cuenta, Date date, boolean delivery, String adress,
-			Date deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
+    public Pedido newPedido(String cart, Cuenta cuenta, String date, boolean delivery, String adress,
+    		String deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
     	Pedido newPedido = new Pedido(cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total);
             return pedidoRepository.save(newPedido);
         }

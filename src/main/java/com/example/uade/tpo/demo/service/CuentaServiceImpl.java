@@ -34,12 +34,12 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
-    public Cuenta newCuenta(String name, String lastName, String username, String password, int discount, List<Pedido> pedidos) throws CuentaDuplicateException {
+    public Cuenta newCuenta(String name, String lastName, String username, String password, int discount) throws CuentaDuplicateException {
         Optional<Cuenta> existingCuenta = cuentaRepository.findByUsername(username);
         if (existingCuenta.isPresent()) {
             throw new CuentaDuplicateException();
         } else {
-            Cuenta newCuenta = new Cuenta(name, lastName, username, password, discount, pedidos);
+            Cuenta newCuenta = new Cuenta(name, lastName, username, password, discount);
             return cuentaRepository.save(newCuenta);
         }
     }
