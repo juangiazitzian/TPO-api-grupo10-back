@@ -55,7 +55,7 @@ public class Pedido {
 	public Pedido() {
 	}
 	
-    public Pedido(Cuenta cuenta, String cart, Date date, boolean delivery, String adress,
+    public Pedido(String cart, Cuenta cuenta, Date date, boolean delivery, String adress,
     Date deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
         this.cuenta = cuenta;
         this.cart = cart;

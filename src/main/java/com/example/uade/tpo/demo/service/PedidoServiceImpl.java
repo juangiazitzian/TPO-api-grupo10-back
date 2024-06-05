@@ -1,6 +1,7 @@
 package com.example.uade.tpo.demo.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,11 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public Optional<Pedido> getPedidoById(Long id) {
         return pedidoRepository.findById(id);
+    }
+    
+    @Override
+    public List<Pedido> getPedidosByUserId(Long id) {
+        return pedidoRepository.findByUserId(id);
     }
 
     @Override
