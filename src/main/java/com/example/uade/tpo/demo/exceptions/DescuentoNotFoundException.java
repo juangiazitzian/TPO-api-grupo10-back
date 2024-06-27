@@ -4,4 +4,5 @@ public class DescuentoNotFoundException extends Exception {
     public DescuentoNotFoundException() {
         super("Descuento not found");
     }
+
 }

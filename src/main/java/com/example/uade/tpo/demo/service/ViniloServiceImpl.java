@@ -36,10 +36,10 @@ public class ViniloServiceImpl implements ViniloService {
     }
 
     @Override
-    public Vinilo newVinilo(String title, String subtitle, String image, Double price, String genero) throws ViniloDuplicateException {
+    public Vinilo newVinilo(String title, String subtitle, String image, Double price, String genero, Integer stock) throws ViniloDuplicateException {
         List<Vinilo> vinilos = viniloRepository.findByTitle(title);
         if (vinilos.isEmpty()) {
-            Vinilo newVinilo = new Vinilo(title, subtitle, image, price, genero);
+            Vinilo newVinilo = new Vinilo(title, subtitle, image, price, genero, stock);
             return viniloRepository.save(newVinilo);
         }
         throw new ViniloDuplicateException();
@@ -47,7 +47,7 @@ public class ViniloServiceImpl implements ViniloService {
     
     
     @Override
-    public Vinilo updateVinilo(Long id, String title, String subtitle, String image, Double price, String genero) throws ViniloNotFoundException {
+    public Vinilo updateVinilo(Long id, String title, String subtitle, String image, Double price, String genero, Integer stock) throws ViniloNotFoundException {
         Optional<Vinilo> optionalVinilo = viniloRepository.findById(id);
         if (optionalVinilo.isPresent()) {
             Vinilo vinilo = optionalVinilo.get();
@@ -56,6 +56,7 @@ public class ViniloServiceImpl implements ViniloService {
             vinilo.setImage(image);
             vinilo.setPrice(price);
             vinilo.setGenero(genero);
+            vinilo.setStock(stock);
             return viniloRepository.save(vinilo);
         } else {
             throw new ViniloNotFoundException();

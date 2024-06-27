@@ -22,5 +22,5 @@ public interface CuentaService {
 
     void deleteCuenta(Long id) throws CuentaNotFoundException;
 
-    void addDescuentoUsado(Long cuentaId, String code) throws DescuentoUsedException, CuentaNotFoundException;
+    void addDescuentoUsado(Long cuentaId, String code) throws DescuentoUsedException, CuentaNotFoundException, Exception;
 }

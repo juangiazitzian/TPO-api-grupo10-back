@@ -29,15 +29,19 @@ public class Vinilo {
     @Column
     private String genero;
 
+    @Column
+    private Integer stock;
+
     public Vinilo() {
     }
     
-    public Vinilo(String title, String subtitle, String image, Double price, String genero) {
+    public Vinilo(String title, String subtitle, String image, Double price, String genero, Integer stock) {
         this.title = title;
         this.subtitle = subtitle;
         this.image = image;
         this.price = price;
         this.genero = genero;
+        this.stock = stock;
     }
     
     
