@@ -3,6 +3,7 @@ package com.example.uade.tpo.demo.controller;
 import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.exceptions.CuentaDuplicateException;
 import com.example.uade.tpo.demo.exceptions.CuentaNotFoundException;
+import com.example.uade.tpo.demo.exceptions.DescuentoUsedException;
 import com.example.uade.tpo.demo.service.CuentaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -69,6 +70,17 @@ public class CuentaController {
         try {
             cuentaService.deleteCuenta(id);
             return ResponseEntity.noContent().build();
+        } catch (CuentaNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/add-descuentoUsado/{id}")
+    public ResponseEntity<Cuenta> addDescuentoUsado(@PathVariable Long id,
+                                                @RequestParam String code) throws DescuentoUsedException {
+        try {
+            cuentaService.addDescuentoUsado(id, code);
+            return ResponseEntity.ok().build();
         } catch (CuentaNotFoundException e) {
             return ResponseEntity.notFound().build();
         }

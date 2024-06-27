@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.exceptions.CuentaDuplicateException;
 import com.example.uade.tpo.demo.exceptions.CuentaNotFoundException;
+import com.example.uade.tpo.demo.exceptions.DescuentoUsedException;
 import com.example.uade.tpo.demo.repository.CuentaRepository;
 
 @Service
@@ -38,7 +39,7 @@ public class CuentaServiceImpl implements CuentaService {
         if (existingCuenta.isPresent()) {
             throw new CuentaDuplicateException();
         } else {
-            Cuenta newCuenta = new Cuenta(name, lastName, username, password, discount);
+            Cuenta newCuenta = new Cuenta(name, lastName, username, password, discount, null);
             return cuentaRepository.save(newCuenta);
         }
     }
@@ -63,6 +64,21 @@ public class CuentaServiceImpl implements CuentaService {
     public void deleteCuenta(Long id) throws CuentaNotFoundException {
         if (cuentaRepository.existsById(id)) {
             cuentaRepository.deleteById(id);
+        } else {
+            throw new CuentaNotFoundException();
+        }
+    }
+
+    @Override
+    public void addDescuentoUsado (Long id, String code) throws DescuentoUsedException, CuentaNotFoundException {
+        Optional<Cuenta> optionalCuenta = cuentaRepository.findById(id);
+        if (optionalCuenta.isPresent()) {
+            Cuenta cuenta = optionalCuenta.get();
+            if (cuenta.getDescuentosUsados().contains(code)){
+                throw new DescuentoUsedException();
+            }
+            cuenta.getDescuentosUsados().add(code);
+            cuentaRepository.save(cuenta);
         } else {
             throw new CuentaNotFoundException();
         }

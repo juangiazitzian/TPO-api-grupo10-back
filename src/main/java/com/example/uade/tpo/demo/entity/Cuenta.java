@@ -2,6 +2,7 @@ package com.example.uade.tpo.demo.entity;
 import java.util.List;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -35,17 +36,20 @@ public class Cuenta {
     @Column
     private int discount;
 
-    
+    @ElementCollection
+    private List<String> descuentosUsados;
+
     public Cuenta() {
 	}
     
-	public Cuenta(String name, String lastName, String username, String password, int discount) {
+	public Cuenta(String name, String lastName, String username, String password, int discount, List<String> descuentosUsados) {
 		this.name = name;
 		this.lastName = lastName;
 		this.username = username;
 		this.password = password;
 		this.isAdmin = false;
 		this.discount = discount;
+        this.descuentosUsados = descuentosUsados;
 	}
 }
 
