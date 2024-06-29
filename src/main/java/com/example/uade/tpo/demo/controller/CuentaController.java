@@ -40,9 +40,9 @@ public class CuentaController {
     }
 
     @PostMapping("add-cuenta")
-    public ResponseEntity<Cuenta> createCuenta(@RequestParam String name, String lastName, String username, String password, int discount) {
+    public ResponseEntity<Cuenta> createCuenta(@RequestParam String name, String lastName, String username, String password) {
         try {
-            Cuenta newcuenta = cuentaService.newCuenta(name, lastName, username, password, discount);
+            Cuenta newcuenta = cuentaService.newCuenta(name, lastName, username, password);
             return ResponseEntity.status(HttpStatus.CREATED).body(newcuenta);
         } catch (CuentaDuplicateException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -57,7 +57,7 @@ public class CuentaController {
                                                 @RequestParam String password,
                                                 @RequestParam int discount) {
         try {
-            Cuenta updatedCuenta = cuentaService.updateCuenta(id, name, lastName, username, password, discount);
+            Cuenta updatedCuenta = cuentaService.updateCuenta(id, name, lastName, username, password);
             return ResponseEntity.ok(updatedCuenta);
         } catch (CuentaNotFoundException e) {
             return ResponseEntity.notFound().build();

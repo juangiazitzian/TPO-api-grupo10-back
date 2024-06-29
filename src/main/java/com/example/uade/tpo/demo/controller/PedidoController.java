@@ -49,7 +49,7 @@ public class PedidoController {
     }
 
     @PostMapping("/add-pedido")
-    public ResponseEntity<Pedido> createPedido(@RequestParam String cart, Cuenta cuenta, String date, boolean delivery, String adress,
+    public ResponseEntity<Pedido> createPedido(@RequestParam List<String> cart, Cuenta cuenta, String date, boolean delivery, String adress,
 			String deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
         try {
             Pedido newPedido = pedidoService.newPedido(cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total);
@@ -61,7 +61,7 @@ public class PedidoController {
 
     @PutMapping("/update/{id}")
         public ResponseEntity<Pedido> updatePedido(@PathVariable Long id,
-                                                @RequestParam String cart,
+                                                @RequestParam List<String> cart,
                                                 @RequestParam Cuenta cuenta,
                                                 @RequestParam String date,
                                                 @RequestParam boolean delivery,

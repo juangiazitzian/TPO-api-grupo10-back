@@ -16,10 +16,10 @@ public interface PedidoService {
     
     List<Pedido> getPedidosByUserId(Long id);
 
-    Pedido newPedido(String cart, Cuenta cuenta, String date, boolean delivery, String adress,
+    Pedido newPedido( List<String> cart, Cuenta cuenta, String date, boolean delivery, String adress,
     		String deliveryDate, boolean entregado, double subtotal, double descuento, double total);
 
-    Pedido updatePedido(Long id, String cart, Cuenta cuenta, String date, boolean delivery, String adress,
+    Pedido updatePedido(Long id, List<String> cart, Cuenta cuenta, String date, boolean delivery, String adress,
             String deliveryDate, boolean entregado, double subtotal, double descuento, double total) throws PedidoNotFoundException;
 
     void deletePedido(Long id) throws PedidoNotFoundException;

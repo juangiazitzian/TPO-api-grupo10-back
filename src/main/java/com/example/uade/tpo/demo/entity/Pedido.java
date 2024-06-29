@@ -1,8 +1,10 @@
 package com.example.uade.tpo.demo.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,8 +23,8 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-	@Column(nullable = false)
-	private String cart;
+    @ElementCollection
+    private List<String> cart;
 
     @ManyToOne
     @JoinColumn(name = "userId")
@@ -55,7 +57,7 @@ public class Pedido {
 	public Pedido() {
 	}
 	
-    public Pedido(String cart, Cuenta cuenta, String date, boolean delivery, String adress,
+    public Pedido( List<String> cart, Cuenta cuenta, String date, boolean delivery, String adress,
     String deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
         this.cuenta = cuenta;
         this.cart = cart;

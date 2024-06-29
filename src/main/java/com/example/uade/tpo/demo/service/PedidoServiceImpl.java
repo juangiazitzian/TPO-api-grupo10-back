@@ -35,14 +35,14 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public Pedido newPedido(String cart, Cuenta cuenta, String date, boolean delivery, String adress,
+    public Pedido newPedido( List<String> cart, Cuenta cuenta, String date, boolean delivery, String adress,
     		String deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
     	Pedido newPedido = new Pedido(cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total);
             return pedidoRepository.save(newPedido);
     }
 
     @Override
-    public Pedido updatePedido(Long id, String cart, Cuenta cuenta, String date, boolean delivery, String adress,
+    public Pedido updatePedido(Long id,  List<String> cart, Cuenta cuenta, String date, boolean delivery, String adress,
     String deliveryDate, boolean entregado, double subtotal, double descuento, double total) throws PedidoNotFoundException {
         Optional<Pedido> optionalPedido = pedidoRepository.findById(id);
         if (optionalPedido.isPresent()) {

@@ -33,8 +33,6 @@ public class Cuenta {
     @Column(nullable = false)
     private boolean isAdmin;
     
-    @Column
-    private int discount;
 
     @ElementCollection
     private List<String> descuentosUsados;
@@ -42,13 +40,12 @@ public class Cuenta {
     public Cuenta() {
 	}
     
-	public Cuenta(String name, String lastName, String username, String password, int discount, List<String> descuentosUsados) {
+	public Cuenta(String name, String lastName, String username, String password, List<String> descuentosUsados) {
 		this.name = name;
 		this.lastName = lastName;
 		this.username = username;
 		this.password = password;
 		this.isAdmin = false;
-		this.discount = discount;
         this.descuentosUsados = descuentosUsados;
 	}
 }

@@ -16,9 +16,9 @@ public interface CuentaService {
     
     Optional<Cuenta> getCuentaByUsername(String username);
 
-    Cuenta newCuenta(String name, String lastName, String username, String password, int discount) throws CuentaDuplicateException;
+    Cuenta newCuenta(String name, String lastName, String username, String password) throws CuentaDuplicateException;
 
-    Cuenta updateCuenta(Long id, String name, String lastName, String username, String password, int discount) throws CuentaNotFoundException;
+    Cuenta updateCuenta(Long id, String name, String lastName, String username, String password) throws CuentaNotFoundException;
 
     void deleteCuenta(Long id) throws CuentaNotFoundException;
 

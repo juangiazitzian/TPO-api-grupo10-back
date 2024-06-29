@@ -41,18 +41,18 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
-    public Cuenta newCuenta(String name, String lastName, String username, String password, int discount) throws CuentaDuplicateException {
+    public Cuenta newCuenta(String name, String lastName, String username, String password) throws CuentaDuplicateException {
         Optional<Cuenta> existingCuenta = cuentaRepository.findByUsername(username);
         if (existingCuenta.isPresent()) {
             throw new CuentaDuplicateException();
         } else {
-            Cuenta newCuenta = new Cuenta(name, lastName, username, password, discount, null);
+            Cuenta newCuenta = new Cuenta(name, lastName, username, password, null);
             return cuentaRepository.save(newCuenta);
         }
     }
 
     @Override
-    public Cuenta updateCuenta(Long id, String name, String lastName, String username, String password, int discount) throws CuentaNotFoundException {
+    public Cuenta updateCuenta(Long id, String name, String lastName, String username, String password) throws CuentaNotFoundException {
         Optional<Cuenta> optionalCuenta = cuentaRepository.findById(id);
         if (optionalCuenta.isPresent()) {
             Cuenta cuenta = optionalCuenta.get();
@@ -60,7 +60,6 @@ public class CuentaServiceImpl implements CuentaService {
             cuenta.setLastName(lastName);
             cuenta.setUsername(username);
             cuenta.setPassword(password);
-            cuenta.setDiscount(discount);
             return cuentaRepository.save(cuenta);
         } else {
             throw new CuentaNotFoundException();
