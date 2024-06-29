@@ -1,7 +1,9 @@
 package com.example.uade.tpo.demo.model;
 import lombok.Data;
+import jakarta.persistence.Embeddable;
 
 @Data
+@Embeddable
 public class ViniloDTO {
     private Long id;
     private String title;
@@ -10,8 +12,6 @@ public class ViniloDTO {
     private Double precio;
     private String genero;
     private Integer cantidad;
-
-    public ViniloDTO() {}
 
     public ViniloDTO(Long id, String title, String subtitle, String image, Double precio, String genero, Integer cantidad) {
         this.id = id;
