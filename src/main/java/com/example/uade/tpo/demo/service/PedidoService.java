@@ -7,7 +7,7 @@ import org.springframework.data.domain.PageRequest;
 
 import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.entity.Pedido;
-import com.example.uade.tpo.demo.entity.ViniloDTO;
+import com.example.uade.tpo.demo.model.ViniloDTO;
 import com.example.uade.tpo.demo.exceptions.PedidoNotFoundException;
 
 public interface PedidoService {

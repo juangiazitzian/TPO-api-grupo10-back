@@ -1,4 +1,4 @@
-package com.example.uade.tpo.demo.entity;
+package com.example.uade.tpo.demo.model;
 import lombok.Data;
 
 @Data
@@ -13,7 +13,6 @@ public class ViniloDTO {
 
     public ViniloDTO() {}
 
-    // Constructor con argumentos
     public ViniloDTO(Long id, String title, String subtitle, String image, Double precio, String genero, Integer cantidad) {
         this.id = id;
         this.title = title;

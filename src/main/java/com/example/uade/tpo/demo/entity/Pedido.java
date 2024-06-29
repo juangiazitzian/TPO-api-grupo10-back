@@ -3,6 +3,8 @@ package com.example.uade.tpo.demo.entity;
 import java.util.Date;
 import java.util.List;
 
+import com.example.uade.tpo.demo.model.ViniloDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -16,7 +18,6 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table
 public class Pedido {
 
 	@Id
