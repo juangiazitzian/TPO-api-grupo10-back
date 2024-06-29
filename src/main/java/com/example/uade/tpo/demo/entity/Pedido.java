@@ -24,7 +24,7 @@ public class Pedido {
     private Long id;
 
     @ElementCollection
-    private List<String> cart;
+    private List<ViniloDTO> cart;
 
     @ManyToOne
     @JoinColumn(name = "userId")
@@ -57,7 +57,7 @@ public class Pedido {
 	public Pedido() {
 	}
 	
-    public Pedido( List<String> cart, Cuenta cuenta, String date, boolean delivery, String adress,
+    public Pedido( List<ViniloDTO> cart, Cuenta cuenta, String date, boolean delivery, String adress,
     String deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
         this.cuenta = cuenta;
         this.cart = cart;
@@ -70,8 +70,6 @@ public class Pedido {
         this.descuento = descuento;
         this.total = total;
 	}
-
-	
 
 }
 

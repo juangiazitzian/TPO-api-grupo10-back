@@ -2,11 +2,10 @@ package com.example.uade.tpo.demo.controller;
 
 import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.entity.Pedido;
-import com.example.uade.tpo.demo.entity.Pedido;
+import com.example.uade.tpo.demo.entity.ViniloDTO;
 import com.example.uade.tpo.demo.exceptions.CuentaNotFoundException;
 import com.example.uade.tpo.demo.exceptions.PedidoNotFoundException;
 import com.example.uade.tpo.demo.service.PedidoService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +25,7 @@ public class PedidoController {
 
     @GetMapping
     public ResponseEntity<Page<Pedido>> getPedidos(@RequestParam(defaultValue = "0") Integer page,
-    												@RequestParam(defaultValue = "10") Integer size) {
+                                                   @RequestParam(defaultValue = "10") Integer size) {
         Page<Pedido> pedidos = pedidoService.getPedidos(PageRequest.of(page, size));
         return ResponseEntity.ok().body(pedidos);
     }
@@ -49,8 +47,11 @@ public class PedidoController {
     }
 
     @PostMapping("/add-pedido")
-    public ResponseEntity<Pedido> createPedido(@RequestParam List<String> cart, Cuenta cuenta, String date, boolean delivery, String adress,
-			String deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
+    public ResponseEntity<Pedido> createPedido(@RequestBody List<ViniloDTO> cart, @RequestParam Cuenta cuenta,
+                                               @RequestParam String date, @RequestParam boolean delivery,
+                                               @RequestParam String adress, @RequestParam String deliveryDate,
+                                               @RequestParam boolean entregado, @RequestParam double subtotal,
+                                               @RequestParam double descuento, @RequestParam double total) {
         try {
             Pedido newPedido = pedidoService.newPedido(cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total);
             return ResponseEntity.status(HttpStatus.CREATED).body(newPedido);
@@ -60,17 +61,12 @@ public class PedidoController {
     }
 
     @PutMapping("/update/{id}")
-        public ResponseEntity<Pedido> updatePedido(@PathVariable Long id,
-                                                @RequestParam List<String> cart,
-                                                @RequestParam Cuenta cuenta,
-                                                @RequestParam String date,
-                                                @RequestParam boolean delivery,
-                                                @RequestParam String adress,
-                                                @RequestParam String deliveryDate,
-                                                @RequestParam boolean entregado,
-                                                @RequestParam double subtotal,
-                                                @RequestParam double descuento,
-                                                @RequestParam double total) {
+    public ResponseEntity<Pedido> updatePedido(@PathVariable Long id, @RequestBody List<ViniloDTO> cart,
+                                               @RequestParam Cuenta cuenta, @RequestParam String date,
+                                               @RequestParam boolean delivery, @RequestParam String adress,
+                                               @RequestParam String deliveryDate, @RequestParam boolean entregado,
+                                               @RequestParam double subtotal, @RequestParam double descuento,
+                                               @RequestParam double total) {
         try {
             Pedido updatedPedido = pedidoService.updatePedido(id, cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total);
             return ResponseEntity.ok(updatedPedido);

@@ -3,6 +3,8 @@ package com.example.uade.tpo.demo.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.entity.Pedido;
+import com.example.uade.tpo.demo.entity.Vinilo;
+import com.example.uade.tpo.demo.entity.ViniloDTO;
 import com.example.uade.tpo.demo.exceptions.PedidoNotFoundException;
 import com.example.uade.tpo.demo.repository.PedidoRepository;
 
@@ -34,16 +38,14 @@ public class PedidoServiceImpl implements PedidoService {
         return pedidoRepository.findByUserId(id);
     }
 
-    @Override
-    public Pedido newPedido( List<String> cart, Cuenta cuenta, String date, boolean delivery, String adress,
-    		String deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
-    	Pedido newPedido = new Pedido(cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total);
-            return pedidoRepository.save(newPedido);
+        public Pedido newPedido(List<ViniloDTO> cart, Cuenta cuenta, String date, boolean delivery, String adress,
+                            String deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
+        Pedido pedido = new Pedido(cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total);
+        return pedidoRepository.save(pedido);
     }
 
-    @Override
-    public Pedido updatePedido(Long id,  List<String> cart, Cuenta cuenta, String date, boolean delivery, String adress,
-    String deliveryDate, boolean entregado, double subtotal, double descuento, double total) throws PedidoNotFoundException {
+    public Pedido updatePedido(Long id, List<ViniloDTO> cart, Cuenta cuenta, String date, boolean delivery, String adress,
+                               String deliveryDate, boolean entregado, double subtotal, double descuento, double total) throws PedidoNotFoundException {
         Optional<Pedido> optionalPedido = pedidoRepository.findById(id);
         if (optionalPedido.isPresent()) {
             Pedido pedido = optionalPedido.get();
@@ -62,6 +64,7 @@ public class PedidoServiceImpl implements PedidoService {
             throw new PedidoNotFoundException();
         }
     }
+
 
     @Override
     public void deletePedido(Long id) throws PedidoNotFoundException {
