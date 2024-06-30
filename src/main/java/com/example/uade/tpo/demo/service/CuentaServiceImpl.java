@@ -1,5 +1,7 @@
 package com.example.uade.tpo.demo.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.exceptions.CuentaDuplicateException;
 import com.example.uade.tpo.demo.exceptions.CuentaNotFoundException;
+import com.example.uade.tpo.demo.exceptions.DescuentoUsedException;
 import com.example.uade.tpo.demo.repository.CuentaRepository;
 
 @Service
@@ -33,18 +36,18 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
-    public Cuenta newCuenta(String name, String lastName, String username, String password, int discount) throws CuentaDuplicateException {
+    public Cuenta newCuenta(String name, String lastName, String username, String password) throws CuentaDuplicateException {
         Optional<Cuenta> existingCuenta = cuentaRepository.findByUsername(username);
         if (existingCuenta.isPresent()) {
             throw new CuentaDuplicateException();
         } else {
-            Cuenta newCuenta = new Cuenta(name, lastName, username, password, discount);
+            Cuenta newCuenta = new Cuenta(name, lastName, username, password, null);
             return cuentaRepository.save(newCuenta);
         }
     }
 
     @Override
-    public Cuenta updateCuenta(Long id, String name, String lastName, String username, String password, int discount) throws CuentaNotFoundException {
+    public Cuenta updateCuenta(Long id, String name, String lastName, String username, String password) throws CuentaNotFoundException {
         Optional<Cuenta> optionalCuenta = cuentaRepository.findById(id);
         if (optionalCuenta.isPresent()) {
             Cuenta cuenta = optionalCuenta.get();
@@ -52,13 +55,11 @@ public class CuentaServiceImpl implements CuentaService {
             cuenta.setLastName(lastName);
             cuenta.setUsername(username);
             cuenta.setPassword(password);
-            cuenta.setDiscount(discount);
             return cuentaRepository.save(cuenta);
         } else {
             throw new CuentaNotFoundException();
         }
     }
-
     @Override
     public void deleteCuenta(Long id) throws CuentaNotFoundException {
         if (cuentaRepository.existsById(id)) {
@@ -66,5 +67,23 @@ public class CuentaServiceImpl implements CuentaService {
         } else {
             throw new CuentaNotFoundException();
         }
+    }
+
+    @Override
+    public void addDescuentoUsado(Long cuentaId, String code)
+            throws DescuentoUsedException, CuentaNotFoundException, Exception {
+                Optional<Cuenta> optionalCuenta = cuentaRepository.findById(cuentaId);
+                if (optionalCuenta.isPresent()) {
+                    Cuenta cuenta = optionalCuenta.get();
+                    List<String> descuentos = cuenta.getDescuentosUsados();
+                    if (descuentos.contains(code)) {
+                        throw new DescuentoUsedException();
+                    }
+                    descuentos.add(code);
+                    cuenta.setDescuentosUsados(descuentos);
+                    cuentaRepository.save(cuenta);
+                } else {
+                    throw new CuentaNotFoundException();
+                }
     }
 }
