@@ -13,6 +13,10 @@ public class ViniloDTO {
     private String genero;
     private Integer cantidad;
 
+    public ViniloDTO(){
+        
+    }
+
     public ViniloDTO(Long id, String title, String subtitle, String image, Double precio, String genero, Integer cantidad) {
         this.id = id;
         this.title = title;

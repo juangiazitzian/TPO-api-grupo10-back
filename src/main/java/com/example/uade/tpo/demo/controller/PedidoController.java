@@ -86,4 +86,17 @@ public class PedidoController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    
+    @PutMapping("/add-carrito/{id}")
+    public ResponseEntity<Pedido> addCarrito(@RequestParam Long id,
+                                        @RequestParam Integer cantidad,
+                                        @RequestParam Long viniloId) {
+            try {
+                pedidoService.addCarrito(id, cantidad, viniloId);
+                return ResponseEntity.ok().build();
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+    }
 }

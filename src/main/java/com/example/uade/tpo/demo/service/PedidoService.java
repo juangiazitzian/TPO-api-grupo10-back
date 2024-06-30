@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 
 import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.entity.Pedido;
+import com.example.uade.tpo.demo.entity.Vinilo;
 import com.example.uade.tpo.demo.model.ViniloDTO;
 import com.example.uade.tpo.demo.exceptions.PedidoNotFoundException;
 
@@ -24,4 +25,9 @@ public interface PedidoService {
             String deliveryDate, boolean entregado, double subtotal, double descuento, double total) throws PedidoNotFoundException;
 
     void deletePedido(Long id) throws PedidoNotFoundException;
+
+    public List<ViniloDTO> getCarrito(Long pedidoId) throws PedidoNotFoundException;
+
+    void addCarrito(Long id, Integer cantidad, Long viniloId) throws Exception;
+
 }

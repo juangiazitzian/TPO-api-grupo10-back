@@ -14,14 +14,20 @@ import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.entity.Pedido;
 import com.example.uade.tpo.demo.entity.Vinilo;
 import com.example.uade.tpo.demo.model.ViniloDTO;
+import com.example.uade.tpo.demo.exceptions.CuentaNotFoundException;
+import com.example.uade.tpo.demo.exceptions.DescuentoUsedException;
 import com.example.uade.tpo.demo.exceptions.PedidoNotFoundException;
 import com.example.uade.tpo.demo.repository.PedidoRepository;
+import com.example.uade.tpo.demo.repository.ViniloRepository;
 
 @Service
 public class PedidoServiceImpl implements PedidoService {
 
     @Autowired
     private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private ViniloRepository viniloRepository;
 
     @Override
     public Page<Pedido> getPedidos(PageRequest pageable) {
@@ -74,5 +80,41 @@ public class PedidoServiceImpl implements PedidoService {
             throw new PedidoNotFoundException();
         }
     }
+
+    
+    @Override
+    public void addCarrito(Long pedidoId, Integer cantidad, Long viniloId) throws Exception {
+        Optional<Pedido> optionalPedido = pedidoRepository.findById(pedidoId);
+        if (optionalPedido.isPresent()) {
+            Pedido pedido = optionalPedido.get();
+            List<ViniloDTO> cart = pedido.getCart();
+
+            Optional<Vinilo> optionalVinilo = viniloRepository.findById(viniloId);
+            if (!optionalVinilo.isPresent()){
+                throw new Exception("Vinilo no existe");
+            }
+
+            Vinilo vinilo = optionalVinilo.get();
+            ViniloDTO newViniloDTO = new ViniloDTO( vinilo.getId(), vinilo.getTitle(), vinilo.getSubtitle(), vinilo.getImage(), vinilo.getPrice(), vinilo.getGenero(), cantidad);
+            cart.add(newViniloDTO);
+            pedido.setCart(cart);
+            pedidoRepository.save(pedido);
+        } else {
+            throw new PedidoNotFoundException();
+        }
+    }
+
+    @Override
+    public List<ViniloDTO> getCarrito(Long pedidoId) throws PedidoNotFoundException {
+        Optional<Pedido> optionalPedido = pedidoRepository.findById(pedidoId);
+        if (optionalPedido.isPresent()) {
+            Pedido pedido = optionalPedido.get();
+            return pedido.getCart();
+        } else {
+            throw new PedidoNotFoundException();
+        }
+}
+
+
     
 }
