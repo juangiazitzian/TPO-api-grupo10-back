@@ -5,6 +5,7 @@ import com.example.uade.tpo.demo.entity.Pedido;
 import com.example.uade.tpo.demo.model.ViniloDTO;
 import com.example.uade.tpo.demo.exceptions.CuentaNotFoundException;
 import com.example.uade.tpo.demo.exceptions.PedidoNotFoundException;
+import com.example.uade.tpo.demo.service.CuentaService;
 import com.example.uade.tpo.demo.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,18 +48,31 @@ public class PedidoController {
     }
 
     @PostMapping("/add-pedido")
-    public ResponseEntity<Pedido> createPedido(@RequestBody List<ViniloDTO> cart, @RequestParam Cuenta cuenta,
-                                               @RequestParam String date, @RequestParam boolean delivery,
-                                               @RequestParam String adress, @RequestParam String deliveryDate,
-                                               @RequestParam boolean entregado, @RequestParam double subtotal,
-                                               @RequestParam double descuento, @RequestParam double total) {
+    public ResponseEntity<Pedido> createPedido(@RequestBody List<ViniloDTO> cart, 
+                                               @RequestParam Long cuentaId,
+                                               @RequestParam String date, 
+                                               @RequestParam boolean delivery,
+                                               @RequestParam String adress, 
+                                               @RequestParam String deliveryDate,
+                                               @RequestParam boolean entregado, 
+                                               @RequestParam double subtotal,
+                                               @RequestParam double descuento, 
+                                               @RequestParam double total) {
         try {
+            // Busca la cuenta por ID
+            Optional<Cuenta> optionalCuenta = CuentaService.getCuentaById(cuentaId);
+            if (!optionalCuenta.isPresent()) {
+                return ResponseEntity.notFound().build();
+            }
+            Cuenta cuenta = optionalCuenta.get();
+    
             Pedido newPedido = pedidoService.newPedido(cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total);
             return ResponseEntity.status(HttpStatus.CREATED).body(newPedido);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
+    
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Pedido> updatePedido(@PathVariable Long id, @RequestBody List<ViniloDTO> cart,
