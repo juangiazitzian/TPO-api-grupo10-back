@@ -54,12 +54,15 @@ public class Pedido {
 	
 	@Column(nullable = false)
 	private double total;
+
+	@Column(nullable = false)
+	private String metodoPago;
 	
 	public Pedido() {
 	}
 	
     public Pedido( List<ViniloDTO> cart, Cuenta cuenta, String date, boolean delivery, String adress,
-    String deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
+    String deliveryDate, boolean entregado, double subtotal, double descuento, double total, String metodoPago) {
         this.cuenta = cuenta;
         this.cart = cart;
         this.date = date;
@@ -70,7 +73,10 @@ public class Pedido {
         this.subtotal = subtotal;
         this.descuento = descuento;
         this.total = total;
+		this.metodoPago = metodoPago;
+
 	}
 
+   
 }
 

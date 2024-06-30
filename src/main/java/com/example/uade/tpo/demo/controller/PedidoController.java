@@ -24,6 +24,11 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
+    @Autowired
+    private CuentaService cuentaService;
+
+
+
     @GetMapping
     public ResponseEntity<Page<Pedido>> getPedidos(@RequestParam(defaultValue = "0") Integer page,
                                                    @RequestParam(defaultValue = "10") Integer size) {
@@ -57,16 +62,16 @@ public class PedidoController {
                                                @RequestParam boolean entregado, 
                                                @RequestParam double subtotal,
                                                @RequestParam double descuento, 
-                                               @RequestParam double total) {
+                                               @RequestParam double total, @RequestParam String metodoPago ) {
         try {
             // Busca la cuenta por ID
-            Optional<Cuenta> optionalCuenta = CuentaService.getCuentaById(cuentaId);
+            Optional<Cuenta> optionalCuenta = cuentaService.getCuentaById(cuentaId);
             if (!optionalCuenta.isPresent()) {
                 return ResponseEntity.notFound().build();
             }
             Cuenta cuenta = optionalCuenta.get();
     
-            Pedido newPedido = pedidoService.newPedido(cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total);
+            Pedido newPedido = pedidoService.newPedido(cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total, metodoPago);
             return ResponseEntity.status(HttpStatus.CREATED).body(newPedido);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -80,9 +85,9 @@ public class PedidoController {
                                                @RequestParam boolean delivery, @RequestParam String adress,
                                                @RequestParam String deliveryDate, @RequestParam boolean entregado,
                                                @RequestParam double subtotal, @RequestParam double descuento,
-                                               @RequestParam double total) {
+                                               @RequestParam double total,  @RequestParam String metodoPago) {
         try {
-            Pedido updatedPedido = pedidoService.updatePedido(id, cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total);
+            Pedido updatedPedido = pedidoService.updatePedido(id, cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total, metodoPago);
             return ResponseEntity.ok(updatedPedido);
         } catch (PedidoNotFoundException e) {
             return ResponseEntity.notFound().build();
