@@ -12,7 +12,10 @@ import com.example.uade.tpo.demo.exceptions.DescuentoUsedException;
 public interface CuentaService {
     Page<Cuenta> getCuentas(PageRequest pageRequest);
 
-    Optional<Cuenta> getCuentaById(Long id);
+    static Optional<Cuenta> getCuentaById(Long id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getCuentaById'");
+    }
     
     Optional<Cuenta> getCuentaByUsername(String username);
 

@@ -39,13 +39,13 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
         public Pedido newPedido(List<ViniloDTO> cart, Cuenta cuenta, String date, boolean delivery, String adress,
-                            String deliveryDate, boolean entregado, double subtotal, double descuento, double total) {
-        Pedido pedido = new Pedido(cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total);
+                            String deliveryDate, boolean entregado, double subtotal, double descuento, double total, String metodoPago) {
+        Pedido pedido = new Pedido(cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total, metodoPago);
         return pedidoRepository.save(pedido);
     }
 
     public Pedido updatePedido(Long id, List<ViniloDTO> cart, Cuenta cuenta, String date, boolean delivery, String adress,
-                               String deliveryDate, boolean entregado, double subtotal, double descuento, double total) throws PedidoNotFoundException {
+                               String deliveryDate, boolean entregado, double subtotal, double descuento, double total, String metodoPago) throws PedidoNotFoundException {
         Optional<Pedido> optionalPedido = pedidoRepository.findById(id);
         if (optionalPedido.isPresent()) {
             Pedido pedido = optionalPedido.get();
@@ -59,6 +59,7 @@ public class PedidoServiceImpl implements PedidoService {
             pedido.setSubtotal(subtotal);
             pedido.setDescuento(descuento);
             pedido.setTotal(total);
+            pedido.setMetodoPago(metodoPago);
             return pedidoRepository.save(pedido);
         } else {
             throw new PedidoNotFoundException();
