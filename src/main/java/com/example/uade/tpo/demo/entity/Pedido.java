@@ -1,4 +1,5 @@
 package com.example.uade.tpo.demo.entity;
+import java.util.Calendar;
 
 import java.util.Date;
 import java.util.List;
@@ -32,7 +33,7 @@ public class Pedido {
     private Cuenta cuenta;
 	
 	@Column(nullable = false)
-	private String date;
+	private Date date;
 	
 	@Column(nullable = false)
 	private boolean delivery;
@@ -41,7 +42,7 @@ public class Pedido {
 	private String adress;
 	
 	@Column(nullable = false)
-	private String deliveryDate;
+	private Date deliveryDate;
 
 	@Column(nullable = false)
 	private boolean entregado;
@@ -61,22 +62,28 @@ public class Pedido {
 	public Pedido() {
 	}
 	
-    public Pedido( List<ViniloDTO> cart, Cuenta cuenta, String date, boolean delivery, String adress,
-    String deliveryDate, boolean entregado, double subtotal, double descuento, double total, String metodoPago) {
+    public Pedido( List<ViniloDTO> cart, Cuenta cuenta, boolean delivery, String adress, boolean entregado,
+    		double subtotal, double descuento, double total, String metodoPago) {
         this.cuenta = cuenta;
         this.cart = cart;
-        this.date = date;
+        this.date = new Date();
         this.delivery = delivery;
         this.adress = adress;
-        this.deliveryDate = deliveryDate;
+        this.deliveryDate = getDeliveryDate(delivery);
         this.entregado = entregado;
         this.subtotal = subtotal;
         this.descuento = descuento;
         this.total = total;
 		this.metodoPago = metodoPago;
-
 	}
-
-   
+    
+    private Date getDeliveryDate(boolean delivery) {
+    	if (delivery) {
+    		Calendar calendario = Calendar.getInstance();
+    		calendario.setTime(new Date());
+    		calendario.add(Calendar.DAY_OF_YEAR, 2);
+    		return calendario.getTime();
+    	}
+    	return null;
+    }
 }
-

@@ -44,23 +44,22 @@ public class PedidoServiceImpl implements PedidoService {
         return pedidoRepository.findByUserId(id);
     }
 
-        public Pedido newPedido(List<ViniloDTO> cart, Cuenta cuenta, String date, boolean delivery, String adress,
-                            String deliveryDate, boolean entregado, double subtotal, double descuento, double total, String metodoPago) {
-        Pedido pedido = new Pedido(cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total, metodoPago);
+        public Pedido newPedido(List<ViniloDTO> cart, Cuenta cuenta, boolean delivery, String adress, boolean entregado, double subtotal, double descuento, double total, String metodoPago) {
+        Pedido pedido = new Pedido(cart, cuenta, delivery, adress, entregado, subtotal, descuento, total, metodoPago);
         return pedidoRepository.save(pedido);
     }
 
-    public Pedido updatePedido(Long id, List<ViniloDTO> cart, Cuenta cuenta, String date, boolean delivery, String adress,
-                               String deliveryDate, boolean entregado, double subtotal, double descuento, double total, String metodoPago) throws PedidoNotFoundException {
+    public Pedido updatePedido(Long id, List<ViniloDTO> cart, Cuenta cuenta, Date date, boolean delivery, String adress,
+    Date deliveryDate, boolean entregado, double subtotal, double descuento, double total, String metodoPago) throws PedidoNotFoundException {
         Optional<Pedido> optionalPedido = pedidoRepository.findById(id);
         if (optionalPedido.isPresent()) {
             Pedido pedido = optionalPedido.get();
             pedido.setCart(cart);
             pedido.setCuenta(cuenta);
             pedido.setDate(date);
+            pedido.setDeliveryDate(deliveryDate);
             pedido.setDelivery(delivery);
             pedido.setAdress(adress);
-            pedido.setDeliveryDate(deliveryDate);
             pedido.setEntregado(entregado);
             pedido.setSubtotal(subtotal);
             pedido.setDescuento(descuento);
@@ -96,10 +95,16 @@ public class PedidoServiceImpl implements PedidoService {
             }
 
             Vinilo vinilo = optionalVinilo.get();
-            ViniloDTO newViniloDTO = new ViniloDTO( vinilo.getId(), vinilo.getTitle(), vinilo.getSubtitle(), vinilo.getImage(), vinilo.getPrice(), vinilo.getGenero(), cantidad);
-            cart.add(newViniloDTO);
-            pedido.setCart(cart);
-            pedidoRepository.save(pedido);
+            if ( vinilo.getStock() - cantidad < 0 ){
+                throw new Exception("Limite de stock alcanzado");
+            }
+            else{
+                ViniloDTO newViniloDTO = new ViniloDTO( vinilo.getId(), vinilo.getTitle(), vinilo.getSubtitle(), vinilo.getImage(), vinilo.getPrice(), vinilo.getGenero(), cantidad);
+                cart.add(newViniloDTO);
+                pedido.setCart(cart);
+                pedidoRepository.save(pedido);
+            }
+            
         } else {
             throw new PedidoNotFoundException();
         }
@@ -116,7 +121,4 @@ public class PedidoServiceImpl implements PedidoService {
         }
 }
 
-    
-
-    
 }

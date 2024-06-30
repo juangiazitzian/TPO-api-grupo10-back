@@ -1,5 +1,6 @@
 package com.example.uade.tpo.demo.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -18,11 +19,10 @@ public interface PedidoService {
     
     List<Pedido> getPedidosByUserId(Long id);
 
-    Pedido newPedido( List<ViniloDTO> cart, Cuenta cuenta, String date, boolean delivery, String adress,
-    		String deliveryDate, boolean entregado, double subtotal, double descuento, double total, String metodoPago);
+    Pedido newPedido( List<ViniloDTO> cart, Cuenta cuenta, boolean delivery, String adress, boolean entregado, double subtotal, double descuento, double total, String metodoPago);
 
-    Pedido updatePedido(Long id, List<ViniloDTO> cart, Cuenta cuenta, String date, boolean delivery, String adress,
-            String deliveryDate, boolean entregado, double subtotal, double descuento, double total, String metodoPago) throws PedidoNotFoundException;
+    Pedido updatePedido(Long id, List<ViniloDTO> cart, Cuenta cuenta, Date date, boolean delivery, String adress,
+            Date deliveryDate, boolean entregado, double subtotal, double descuento, double total, String metodoPago) throws PedidoNotFoundException;
 
     void deletePedido(Long id) throws PedidoNotFoundException;
 

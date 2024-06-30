@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,10 +56,8 @@ public class PedidoController {
     @PostMapping("/add-pedido")
     public ResponseEntity<Pedido> createPedido(@RequestBody List<ViniloDTO> cart, 
                                                @RequestParam Long cuentaId,
-                                               @RequestParam String date, 
                                                @RequestParam boolean delivery,
                                                @RequestParam String adress, 
-                                               @RequestParam String deliveryDate,
                                                @RequestParam boolean entregado, 
                                                @RequestParam double subtotal,
                                                @RequestParam double descuento, 
@@ -71,7 +70,7 @@ public class PedidoController {
             }
             Cuenta cuenta = optionalCuenta.get();
     
-            Pedido newPedido = pedidoService.newPedido(cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total, metodoPago);
+            Pedido newPedido = pedidoService.newPedido(cart, cuenta, delivery, adress, entregado, subtotal, descuento, total, metodoPago);
             return ResponseEntity.status(HttpStatus.CREATED).body(newPedido);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -81,9 +80,9 @@ public class PedidoController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Pedido> updatePedido(@PathVariable Long id, @RequestBody List<ViniloDTO> cart,
-                                               @RequestParam Cuenta cuenta, @RequestParam String date,
+                                               @RequestParam Cuenta cuenta, @RequestParam Date date,
                                                @RequestParam boolean delivery, @RequestParam String adress,
-                                               @RequestParam String deliveryDate, @RequestParam boolean entregado,
+                                               @RequestParam Date deliveryDate, @RequestParam boolean entregado,
                                                @RequestParam double subtotal, @RequestParam double descuento,
                                                @RequestParam double total,  @RequestParam String metodoPago) {
         try {
