@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import com.example.uade.tpo.demo.entity.Cuenta;
+import com.example.uade.tpo.demo.entity.Role;
 import com.example.uade.tpo.demo.exceptions.CuentaDuplicateException;
 import com.example.uade.tpo.demo.exceptions.CuentaNotFoundException;
 import com.example.uade.tpo.demo.exceptions.DescuentoUsedException;
@@ -16,7 +17,7 @@ public interface CuentaService {
     
     Optional<Cuenta> getCuentaByUsername(String username);
 
-    Cuenta newCuenta(String name, String lastName, String username, String password) throws CuentaDuplicateException;
+    Cuenta newCuenta(String name, String lastName, String username, String password, Role role) throws CuentaDuplicateException;
 
     Cuenta updateCuenta(Long id, String name, String lastName, String username, String password) throws CuentaNotFoundException;
 

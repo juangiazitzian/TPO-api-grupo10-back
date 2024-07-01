@@ -1,6 +1,7 @@
 package com.example.uade.tpo.demo.controller;
 
 import com.example.uade.tpo.demo.entity.Cuenta;
+import com.example.uade.tpo.demo.entity.Role;
 import com.example.uade.tpo.demo.exceptions.CuentaDuplicateException;
 import com.example.uade.tpo.demo.exceptions.CuentaNotFoundException;
 import com.example.uade.tpo.demo.service.CuentaService;
@@ -40,9 +41,13 @@ public class CuentaController {
     }
 
     @PostMapping("add-cuenta")
-    public ResponseEntity<Cuenta> createCuenta(@RequestParam String name,												@RequestParam String lastName,												@RequestParam String username,												@RequestParam String password) {
+    public ResponseEntity<Cuenta> createCuenta(@RequestParam String name,
+												@RequestParam String lastName,
+												@RequestParam String username,
+												@RequestParam String password,
+                                                @RequestParam Role role) {
         try {
-            Cuenta newcuenta = cuentaService.newCuenta(name, lastName, username, password);
+            Cuenta newcuenta = cuentaService.newCuenta(name, lastName, username, password,role);
             return ResponseEntity.status(HttpStatus.CREATED).body(newcuenta);
         } catch (CuentaDuplicateException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.uade.tpo.demo.entity.Carrito;
 import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.entity.Descuento;
+import com.example.uade.tpo.demo.entity.Role;
 import com.example.uade.tpo.demo.entity.Vinilo;
 import com.example.uade.tpo.demo.exceptions.CuentaDuplicateException;
 import com.example.uade.tpo.demo.exceptions.CuentaNotFoundException;
@@ -53,13 +54,13 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
-    public Cuenta newCuenta(String name, String lastName, String username, String password) throws CuentaDuplicateException {
+    public Cuenta newCuenta(String name, String lastName, String username, String password, Role role) throws CuentaDuplicateException {
         Optional<Cuenta> existingCuenta = cuentaRepository.findByUsername(username);
         if (existingCuenta.isPresent()) {
             throw new CuentaDuplicateException();
         } else {
         	Long carrito = carritoService.newCarrito();
-            Cuenta newCuenta = new Cuenta(name, lastName, username, password, carrito);
+            Cuenta newCuenta = new Cuenta(name, lastName, username, password, carrito, role);
             return cuentaRepository.save(newCuenta);
         }
     }
