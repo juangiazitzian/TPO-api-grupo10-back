@@ -9,9 +9,12 @@ import org.springframework.stereotype.Service;
 
 import com.example.uade.tpo.demo.entity.Carrito;
 import com.example.uade.tpo.demo.entity.Cuenta;
+import com.example.uade.tpo.demo.entity.Vinilo;
 import com.example.uade.tpo.demo.exceptions.CuentaDuplicateException;
 import com.example.uade.tpo.demo.exceptions.CuentaNotFoundException;
 import com.example.uade.tpo.demo.exceptions.DescuentoUsedException;
+import com.example.uade.tpo.demo.exceptions.ViniloOutOfStockException;
+import com.example.uade.tpo.demo.model.ViniloCarrito;
 import com.example.uade.tpo.demo.repository.CarritoRepository;
 import com.example.uade.tpo.demo.repository.CuentaRepository;
 
@@ -26,6 +29,9 @@ public class CuentaServiceImpl implements CuentaService {
     
     @Autowired
     private CarritoService carritoService;
+    
+    @Autowired
+    private ViniloService viniloService;
 
     @Override
     public Page<Cuenta> getCuentas(PageRequest pageable) {
@@ -82,7 +88,25 @@ public class CuentaServiceImpl implements CuentaService {
     public void addItem(String username, Long viniloId, int cantidad) throws Exception {
     	Cuenta cuenta = cuentaRepository.findByUsername(username).get();
         Carrito carrito = carritoRepository.findById(cuenta.getCartId()).get();
-        carrito.addToCart(viniloId, cantidad);
+        Vinilo vinilo = viniloService.getViniloById(viniloId).get();;
+		boolean already = false;
+		for (ViniloCarrito viniloDTO : carrito.getCart()) {
+			if (viniloDTO.getViniloId() == viniloId) {
+				already = true;
+				if (vinilo.getStock() - (viniloDTO.getCantidad() + cantidad) >= 0) {
+					viniloDTO.setCantidad(viniloDTO.getCantidad() + cantidad);
+				} else {
+					throw new ViniloOutOfStockException();
+				}
+			}
+		}
+		if (!already) {
+			if (vinilo.getStock() - cantidad >= 0) {
+				carrito.addViniloCarrito(new ViniloCarrito(viniloId, cantidad));
+			} else {
+				throw new ViniloOutOfStockException();
+			}
+		}
         carritoRepository.save(carrito);
     }
     

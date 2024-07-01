@@ -26,6 +26,9 @@ public class PedidoServiceImpl implements PedidoService {
     @Autowired
     private ViniloRepository viniloRepository;
 
+    @Autowired
+    private CarritoService carritoService;
+
     @Override
     public Page<Pedido> getPedidos(PageRequest pageable) {
         return pedidoRepository.findAll(pageable);
@@ -44,7 +47,6 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public Pedido newPedido(Cuenta cuenta, boolean delivery, String adress, String descuento, String metodoPago) {
         Pedido pedido = new Pedido(cuenta, delivery, adress, descuento, metodoPago);
-        CarritoService carritoService = new CarritoServiceImpl();
         for (ViniloCarrito viniloCarrito : carritoService.getCarritoById(cuenta.getCartId()).get().getCart()) {
         	Optional<Vinilo> viniloOpt = viniloRepository.findById(viniloCarrito.getViniloId());
         	if (viniloOpt.isPresent()) {

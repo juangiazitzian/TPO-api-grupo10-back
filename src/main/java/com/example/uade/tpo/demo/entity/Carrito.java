@@ -3,6 +3,8 @@ package com.example.uade.tpo.demo.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.example.uade.tpo.demo.exceptions.ViniloOutOfStockException;
 import com.example.uade.tpo.demo.model.ViniloCarrito;
 import com.example.uade.tpo.demo.model.ViniloDTO;
@@ -37,27 +39,8 @@ public class Carrito {
 		return total;
 	}
 
-	public void addToCart(Long ViniloId, int cantidad) throws Exception {
-		ViniloService viniloService = new ViniloServiceImpl();
-		Vinilo vinilo = viniloService.getViniloById(ViniloId).get();;
-		boolean already = false;
-		for (ViniloCarrito viniloDTO : cart) {
-			if (viniloDTO.getViniloId() == ViniloId) {
-				already = true;
-				if (vinilo.getStock() - (viniloDTO.getCantidad() + cantidad) >= 0) {
-					viniloDTO.setCantidad(viniloDTO.getCantidad() + cantidad);
-				} else {
-					throw new ViniloOutOfStockException();
-				}
-			}
-		}
-		if (!already) {
-			if (vinilo.getStock() - cantidad >= 0) {
-				cart.add(new ViniloCarrito(ViniloId, cantidad));
-			} else {
-				throw new ViniloOutOfStockException();
-			}
-		}
+	public void addViniloCarrito(ViniloCarrito vinilo) {
+		cart.add(vinilo);
 	}
 	
 	public void lessToCart(Long ViniloId, int cantidad) throws Exception {
