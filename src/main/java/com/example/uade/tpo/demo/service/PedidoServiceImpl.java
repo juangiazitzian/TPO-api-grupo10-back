@@ -14,6 +14,7 @@ import com.example.uade.tpo.demo.entity.Pedido;
 import com.example.uade.tpo.demo.entity.Vinilo;
 import com.example.uade.tpo.demo.exceptions.PedidoNotFoundException;
 import com.example.uade.tpo.demo.model.ViniloCarrito;
+import com.example.uade.tpo.demo.model.ViniloDTO;
 import com.example.uade.tpo.demo.repository.PedidoRepository;
 import com.example.uade.tpo.demo.repository.ViniloRepository;
 
@@ -28,6 +29,9 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Autowired
     private CarritoService carritoService;
+    
+    @Autowired
+    private DescuentoService descuentoService;
 
     @Override
     public Page<Pedido> getPedidos(PageRequest pageable) {
@@ -46,7 +50,9 @@ public class PedidoServiceImpl implements PedidoService {
     
     @Override
     public Pedido newPedido(Cuenta cuenta, boolean delivery, String adress, String descuento, String metodoPago) {
-        Pedido pedido = new Pedido(cuenta, delivery, adress, descuento, metodoPago);
+    	List<ViniloDTO> carrito = carritoService.getCarritoById(cuenta.getCartId()).get().getCartDTO();
+    	double descuentoOff = descuentoService.getDescuentoByCode(descuento).getOff();
+        Pedido pedido = new Pedido(cuenta, carrito, delivery, adress, descuento, descuentoOff, metodoPago);
         for (ViniloCarrito viniloCarrito : carritoService.getCarritoById(cuenta.getCartId()).get().getCart()) {
         	Optional<Vinilo> viniloOpt = viniloRepository.findById(viniloCarrito.getViniloId());
         	if (viniloOpt.isPresent()) {

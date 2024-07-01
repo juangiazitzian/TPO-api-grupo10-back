@@ -65,9 +65,9 @@ public class Pedido {
 	public Pedido() {
 	}
 	
-    public Pedido(Cuenta cuenta, boolean delivery, String adress, String descuento, String metodoPago) {
+    public Pedido(Cuenta cuenta, List<ViniloDTO> cart, boolean delivery, String adress, String descuento, double descuentoOff, String metodoPago) {
         this.cuenta = cuenta;
-        this.cart = getCart(cuenta.getCartId());
+        this.cart = cart;
         this.date = new Date();
         this.delivery = delivery;
         this.adress = adress;
@@ -75,8 +75,8 @@ public class Pedido {
         this.entregado = false;
         this.subtotal = getSubtotal(this.cart);
         this.descuento = descuento;
-        this.descuentoOff = getDescuento(this.subtotal, cuenta.getDescuentosUsados(), descuento);
-        this.total = getTotal(this.subtotal, this.descuentoOff, delivery);
+        this.descuentoOff = descuentoOff;
+        this.total = getTotal(this.subtotal, getDescuentoOff(this.subtotal, this.cuenta.getDescuentosUsados(), descuento, descuentoOff), delivery);
 		this.metodoPago = metodoPago;
 	}
     
@@ -90,11 +90,6 @@ public class Pedido {
     	return null;
     }
     
-    private List<ViniloDTO> getCart(Long cartId) {
-    	CarritoService carritoService = new CarritoServiceImpl();
-    	return carritoService.getCarritoById(cartId).get().getCartDTO();
-    }
-    
     private double getSubtotal(List<ViniloDTO> cart) {
 		double total = 0;
 		for (ViniloDTO vinilo : cart) {
@@ -103,12 +98,12 @@ public class Pedido {
 		return total;
 	}
     
-    private double getDescuento(double subtotal, List<String> descuentosUsados, String codDescuento) {
+    private double getDescuentoOff(double subtotal, List<String> descuentosUsados, String codDescuento, double descuentoOff) {
     	double descuento = 0;
     	if (descuentosUsados.contains(codDescuento) || codDescuento == null) {
     		return descuento;
     	}
-    	return subtotal / 100 * new DescuentoServiceImpl().getDescuentoByCode(codDescuento).getOff();
+    	return subtotal / 100 * descuentoOff;
     }
     
     private double getTotal(double subtotal, double descuento, boolean delivery) {
