@@ -1,11 +1,7 @@
 package com.example.uade.tpo.demo.controller;
 
-import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.entity.Factura;
 import com.example.uade.tpo.demo.entity.Pedido;
-import com.example.uade.tpo.demo.model.ViniloDTO;
-import com.example.uade.tpo.demo.exceptions.CuentaNotFoundException;
-import com.example.uade.tpo.demo.exceptions.PedidoNotFoundException;
 import com.example.uade.tpo.demo.service.FacturaService;
 import com.example.uade.tpo.demo.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @RestController

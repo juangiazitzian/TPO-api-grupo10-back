@@ -31,6 +31,7 @@ public class CarritoServiceImpl implements CarritoService {
     @Override
     public Long newCarrito() {
     	Carrito newCarrito = new Carrito();
+    	if (carritoRepository == null) System.out.println("null");
         Carrito carrito = carritoRepository.save(newCarrito);
         return carrito.getId();
     }

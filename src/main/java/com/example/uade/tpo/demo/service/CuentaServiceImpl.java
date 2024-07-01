@@ -23,6 +23,9 @@ public class CuentaServiceImpl implements CuentaService {
     
     @Autowired
     private CarritoRepository carritoRepository;
+    
+    @Autowired
+    private CarritoService carritoService;
 
     @Override
     public Page<Cuenta> getCuentas(PageRequest pageable) {
@@ -45,7 +48,8 @@ public class CuentaServiceImpl implements CuentaService {
         if (existingCuenta.isPresent()) {
             throw new CuentaDuplicateException();
         } else {
-            Cuenta newCuenta = new Cuenta(name, lastName, username, password);
+        	Long carrito = carritoService.newCarrito();
+            Cuenta newCuenta = new Cuenta(name, lastName, username, password, carrito);
             return cuentaRepository.save(newCuenta);
         }
     }

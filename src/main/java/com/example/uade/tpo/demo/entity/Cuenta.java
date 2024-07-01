@@ -42,12 +42,12 @@ public class Cuenta {
     public Cuenta() {
 	}
     
-	public Cuenta(String name, String lastName, String username, String password) {
+	public Cuenta(String name, String lastName, String username, String password, Long cartId) {
 		this.name = name;
 		this.lastName = lastName;
 		this.username = username;
 		this.password = password;
-		this.cartId = new CarritoServiceImpl().newCarrito();
+		this.cartId = cartId;
 		this.isAdmin = false;
 	}
 

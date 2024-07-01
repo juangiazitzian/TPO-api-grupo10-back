@@ -26,6 +26,7 @@ public class Carrito {
     private List<ViniloCarrito> cart;
 
 	public Carrito() {
+		this.cart = new ArrayList<>();
 	}
 	
 	public double getSubtotal() {
