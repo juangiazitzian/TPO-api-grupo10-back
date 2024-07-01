@@ -30,14 +30,6 @@ public class Carrito {
 	public Carrito() {
 		this.cart = new ArrayList<>();
 	}
-	
-	public double getSubtotal() {
-		double total = 0;
-		for (ViniloCarrito vinilo : cart) {
-			total += (vinilo.getPrecio() * vinilo.getCantidad());
-		}
-		return total;
-	}
 
 	public void addViniloCarrito(ViniloCarrito vinilo) {
 		cart.add(vinilo);
@@ -68,20 +60,6 @@ public class Carrito {
 	}
 	public List<ViniloCarrito> getCart() {
 		return cart;
-	}
-	public List<ViniloDTO> getCartDTO() {
-		List<ViniloDTO> vinilosDTO = new ArrayList<>();
-		for (ViniloCarrito v : cart) {
-			vinilosDTO.add(new ViniloDTO(
-					v.getViniloId(),
-					v.getTitle(),
-					v.getSubtitle(),
-					v.getImage(),
-					v.getPrecio(),
-					v.getGenero(),
-					v.getCantidad()));
-		}
-		return vinilosDTO;
 	}
 
 	public void setId(Long id) {

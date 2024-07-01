@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.uade.tpo.demo.entity.Carrito;
 import com.example.uade.tpo.demo.entity.Cuenta;
+import com.example.uade.tpo.demo.entity.Descuento;
 import com.example.uade.tpo.demo.entity.Vinilo;
 import com.example.uade.tpo.demo.exceptions.CuentaDuplicateException;
 import com.example.uade.tpo.demo.exceptions.CuentaNotFoundException;
@@ -32,6 +33,9 @@ public class CuentaServiceImpl implements CuentaService {
     
     @Autowired
     private ViniloService viniloService;
+    
+    @Autowired
+    private DescuentoService descuentoService;
 
     @Override
     public Page<Cuenta> getCuentas(PageRequest pageable) {
@@ -88,21 +92,27 @@ public class CuentaServiceImpl implements CuentaService {
     public void addItem(String username, Long viniloId, int cantidad) throws Exception {
     	Cuenta cuenta = cuentaRepository.findByUsername(username).get();
         Carrito carrito = carritoRepository.findById(cuenta.getCartId()).get();
-        Vinilo vinilo = viniloService.getViniloById(viniloId).get();;
+        Vinilo vinilo = viniloService.getViniloById(viniloId).get();
 		boolean already = false;
-		for (ViniloCarrito viniloDTO : carrito.getCart()) {
-			if (viniloDTO.getViniloId() == viniloId) {
+		for (ViniloCarrito viniloCarrito : carrito.getCart()) {
+	    	System.out.println(6);
+			if (viniloCarrito.getViniloId() == viniloId) {
+		    	System.out.println(7);
 				already = true;
-				if (vinilo.getStock() - (viniloDTO.getCantidad() + cantidad) >= 0) {
-					viniloDTO.setCantidad(viniloDTO.getCantidad() + cantidad);
+		    	System.out.println(8);
+				if (vinilo.getStock() - (viniloCarrito.getCantidad() + cantidad) >= 0) {
+					viniloCarrito.setCantidad(viniloCarrito.getCantidad() + cantidad);
+			    	System.out.println(9);
 				} else {
+			    	System.out.println(10);
 					throw new ViniloOutOfStockException();
 				}
 			}
 		}
 		if (!already) {
 			if (vinilo.getStock() - cantidad >= 0) {
-				carrito.addViniloCarrito(new ViniloCarrito(viniloId, cantidad));
+				ViniloCarrito newVinilo = new ViniloCarrito(viniloId, cantidad);
+				carrito.addViniloCarrito(newVinilo);
 			} else {
 				throw new ViniloOutOfStockException();
 			}
@@ -127,9 +137,13 @@ public class CuentaServiceImpl implements CuentaService {
             if (descuentos.contains(code)) {
                 throw new DescuentoUsedException();
             }
-            descuentos.add(code);
-            cuenta.setDescuentosUsados(descuentos);
-            cuentaRepository.save(cuenta);
+            for (Descuento descuento : descuentoService.getDescuentosList()) {
+            	if (code.equals(descuento.getCode())) {
+	            	descuentos.add(code);
+		            cuenta.setDescuentosUsados(descuentos);
+		            cuentaRepository.save(cuenta);
+            	}
+            }
         } else {
             throw new CuentaNotFoundException();
         }

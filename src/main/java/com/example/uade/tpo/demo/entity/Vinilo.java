@@ -28,12 +28,12 @@ public class Vinilo {
     private String genero;
 
     @Column
-    private Integer stock;
+    private int stock;
 
     public Vinilo() {
     }
     
-    public Vinilo(String title, String subtitle, String image, Double price, String genero, Integer stock) {
+    public Vinilo(String title, String subtitle, String image, Double price, String genero, int stock) {
         this.title = title;
         this.subtitle = subtitle;
         this.image = image;

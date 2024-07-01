@@ -84,16 +84,16 @@ public class CuentaController {
         }
     }
     
-    @PutMapping("/add-item-cart/")
-    public void addItemCart(@PathVariable String username, @RequestParam Long viniloId, @RequestParam int cantidad) {
+    @PutMapping("/add-item-cart")
+    public void addItemCart(@RequestParam String username, @RequestParam Long viniloId, @RequestParam int cantidad) {
     	try {
 			cuentaService.addItem(username, viniloId, cantidad);
 		} catch (Exception e) {
 		}
     }
     
-    @PutMapping("/less-item-cart/")
-    public void lessItemCart(@PathVariable String username, @RequestParam Long viniloId, @RequestParam int cantidad) {
+    @PutMapping("/less-item-cart")
+    public void lessItemCart(@RequestParam String username, @RequestParam Long viniloId, @RequestParam int cantidad) {
     	try {
 			cuentaService.lessItem(username, viniloId, cantidad);
 		} catch (Exception e) {

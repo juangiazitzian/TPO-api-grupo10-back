@@ -1,5 +1,6 @@
 package com.example.uade.tpo.demo.service;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +11,8 @@ import com.example.uade.tpo.demo.exceptions.DescuentoNotFoundException;
 
 public interface DescuentoService {
     Page<Descuento> getDescuentos(PageRequest pageRequest);
+    
+    List<Descuento> getDescuentosList();
 
     Optional<Descuento> getDescuentoById(Long id);
 

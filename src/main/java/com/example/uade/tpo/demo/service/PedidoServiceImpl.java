@@ -1,5 +1,6 @@
 package com.example.uade.tpo.demo.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +30,9 @@ public class PedidoServiceImpl implements PedidoService {
     
     @Autowired
     private ViniloRepository viniloRepository;
+    
+    @Autowired
+    private ViniloService viniloService;
 
     @Autowired
     private CarritoService carritoService;
@@ -57,19 +61,27 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public Pedido newPedido(Cuenta cuenta, boolean delivery, String adress, String descuento, String metodoPago) {
-    	List<ViniloDTO> carrito = carritoService.getCarritoById(cuenta.getCartId()).get().getCartDTO();
+		List<ViniloDTO> vinilosDTO = new ArrayList<>();
+		for (ViniloCarrito v : carritoService.getCarritoById(cuenta.getCartId()).get().getCart()) {
+			Long id = v.getViniloId();
+			vinilosDTO.add(new ViniloDTO(
+					id,
+					viniloService.getTitle(id),
+					viniloService.getSubtitle(id),
+					viniloService.getImage(id),
+					viniloService.getPrecio(id),
+					viniloService.getGenero(id),
+					v.getCantidad()));
+		}
         double descuentoOff = 0;
         if (descuentoService.getDescuentoByCode(descuento) != null){
             descuentoOff = descuentoService.getDescuentoByCode(descuento).getOff(); 
         }
-           
-        Pedido pedido = new Pedido(cuenta, carrito, delivery, adress, descuento, descuentoOff, metodoPago);
+        Pedido pedido = new Pedido(cuenta, vinilosDTO, delivery, adress, descuento, descuentoOff, metodoPago);
         try {
             cuentaService.addDescuentoUsado(cuenta.getId(), descuento);
         } catch (Exception e) {
-          
         }
-
         for (ViniloCarrito viniloCarrito : carritoService.getCarritoById(cuenta.getCartId()).get().getCart()) {
         	Optional<Vinilo> viniloOpt = viniloRepository.findById(viniloCarrito.getViniloId());
         	if (viniloOpt.isPresent()) {

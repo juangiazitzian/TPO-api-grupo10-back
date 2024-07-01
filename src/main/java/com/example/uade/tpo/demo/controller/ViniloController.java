@@ -41,7 +41,7 @@ public class ViniloController {
     }
 
     @PostMapping("/add-vinilo")
-    public ResponseEntity<Vinilo> createVinilo(@RequestParam String title, String subtitle, String image, Double price, String genero, Integer stock) {
+    public ResponseEntity<Vinilo> createVinilo(@RequestParam String title, String subtitle, String image, Double price, String genero, int stock) {
         try {
             Vinilo newVinilo = viniloService.newVinilo(
             		title, subtitle, image, price, genero, stock
@@ -59,9 +59,9 @@ public class ViniloController {
                                                 @RequestParam String image,
                                                 @RequestParam Double price,
                                                 @RequestParam String genero,
-                                                @RequestParam Integer stock) {
+                                                @RequestParam int stock) {
         try {
-            Vinilo updatedVinilo = viniloService.updateVinilo(id, title, subtitle, image, price, genero,stock);
+            Vinilo updatedVinilo = viniloService.updateVinilo(id, title, subtitle, image, price, genero, stock);
             return ResponseEntity.ok(updatedVinilo);
         } catch (ViniloNotFoundException e) {
             return ResponseEntity.notFound().build();

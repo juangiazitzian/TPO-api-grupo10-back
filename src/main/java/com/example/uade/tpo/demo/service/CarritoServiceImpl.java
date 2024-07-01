@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.uade.tpo.demo.entity.Carrito;
+import com.example.uade.tpo.demo.model.ViniloCarrito;
 import com.example.uade.tpo.demo.repository.CarritoRepository;
 import com.example.uade.tpo.demo.repository.CuentaRepository;
 
@@ -16,6 +17,9 @@ public class CarritoServiceImpl implements CarritoService {
     
     @Autowired
     private CuentaRepository cuentaRepository;
+    
+    @Autowired
+    private ViniloService viniloService;
 
     @Override
     public Optional<Carrito> getCarritoById(Long id) {
@@ -38,6 +42,14 @@ public class CarritoServiceImpl implements CarritoService {
 
 	@Override
 	public double totalCarrito(Long id) {
-		return getCarritoById(id).get().getSubtotal();
+		return getSubtotal(id);
+	}
+	
+	public double getSubtotal(Long id) {
+		double total = 0;
+		for (ViniloCarrito vinilo : getCarritoById(id).get().getCart()) {
+			total += (viniloService.getViniloById(vinilo.getViniloId()).get().getPrice() * vinilo.getCantidad());
+		}
+		return total;
 	}
 }

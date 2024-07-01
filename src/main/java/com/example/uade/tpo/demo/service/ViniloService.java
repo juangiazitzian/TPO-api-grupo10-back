@@ -16,9 +16,9 @@ public interface ViniloService {
 
     List<Vinilo> getViniloByTitulo(String title);
 
-    Vinilo newVinilo(String title, String subtitle, String image, Double price, String genero, Integer stock) throws ViniloDuplicateException;
+    Vinilo newVinilo(String title, String subtitle, String image, Double price, String genero, int stock) throws ViniloDuplicateException;
     
-    Vinilo updateVinilo(Long id, String title, String subtitle, String image, Double price, String genero, Integer stock) throws ViniloNotFoundException;
+    Vinilo updateVinilo(Long id, String title, String subtitle, String image, Double price, String genero, int stock) throws ViniloNotFoundException;
 
     void deleteVinilo(Long id) throws ViniloNotFoundException;
     

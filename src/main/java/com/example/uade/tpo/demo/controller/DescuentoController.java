@@ -2,7 +2,6 @@ package com.example.uade.tpo.demo.controller;
 
 import com.example.uade.tpo.demo.entity.Descuento;
 import com.example.uade.tpo.demo.exceptions.DescuentoNotFoundException;
-import com.example.uade.tpo.demo.exceptions.DescuentoDuplicateException;
 import com.example.uade.tpo.demo.service.DescuentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -40,13 +39,12 @@ public class DescuentoController {
         return ResponseEntity.ok().body(descuento);
     }
 
-    @PostMapping("/add-Descuento")
+    @PostMapping("/add-descuento")
     public ResponseEntity<Descuento> createDescuento(@RequestParam String code, Double off) {
             Descuento newDescuento = descuentoService.newDescuento(
             		code, off
             );
             return ResponseEntity.status(HttpStatus.CREATED).body(newDescuento);
-         
     }
 
     @PutMapping("/update/{id}")

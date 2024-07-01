@@ -23,6 +23,7 @@ public class ViniloServiceImpl implements ViniloService {
         return viniloRepository.findAll(pageable);
     }
     
+    @Override
     public List<Vinilo> getViniloByTitulo(String title) {
         return viniloRepository.findByTitle(title);
     }
@@ -33,7 +34,7 @@ public class ViniloServiceImpl implements ViniloService {
     }
 
     @Override
-    public Vinilo newVinilo(String title, String subtitle, String image, Double price, String genero, Integer stock) throws ViniloDuplicateException {
+    public Vinilo newVinilo(String title, String subtitle, String image, Double price, String genero, int stock) throws ViniloDuplicateException {
         List<Vinilo> vinilos = viniloRepository.findByTitle(title);
         if (vinilos.isEmpty()) {
             Vinilo newVinilo = new Vinilo(title, subtitle, image, price, genero, stock);
@@ -44,7 +45,7 @@ public class ViniloServiceImpl implements ViniloService {
     
     
     @Override
-    public Vinilo updateVinilo(Long id, String title, String subtitle, String image, Double price, String genero, Integer stock) throws ViniloNotFoundException {
+    public Vinilo updateVinilo(Long id, String title, String subtitle, String image, Double price, String genero, int stock) throws ViniloNotFoundException {
         Optional<Vinilo> optionalVinilo = viniloRepository.findById(id);
         if (optionalVinilo.isPresent()) {
             Vinilo vinilo = optionalVinilo.get();
