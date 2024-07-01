@@ -42,14 +42,11 @@ public class DescuentoController {
 
     @PostMapping("/add-Descuento")
     public ResponseEntity<Descuento> createDescuento(@RequestParam String code, Double off) {
-        try {
             Descuento newDescuento = descuentoService.newDescuento(
             		code, off
             );
             return ResponseEntity.status(HttpStatus.CREATED).body(newDescuento);
-        } catch (DescuentoDuplicateException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+         
     }
 
     @PutMapping("/update/{id}")

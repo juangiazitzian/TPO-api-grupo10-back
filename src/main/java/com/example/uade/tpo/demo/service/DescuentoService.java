@@ -15,7 +15,7 @@ public interface DescuentoService {
 
     Descuento getDescuentoByCode(String Code);
 
-    Descuento newDescuento(String Code, double Off) throws DescuentoDuplicateException;
+    Descuento newDescuento(String Code, double Off);
     
     Descuento updateDescuento(Long id, String code, double off) throws DescuentoNotFoundException;
 

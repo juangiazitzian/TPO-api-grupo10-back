@@ -51,7 +51,11 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public Pedido newPedido(Cuenta cuenta, boolean delivery, String adress, String descuento, String metodoPago) {
     	List<ViniloDTO> carrito = carritoService.getCarritoById(cuenta.getCartId()).get().getCartDTO();
-    	double descuentoOff = descuentoService.getDescuentoByCode(descuento).getOff();
+        double descuentoOff = 0;
+        if (descuentoService.getDescuentoByCode(descuento) != null){
+             descuentoOff = descuentoService.getDescuentoByCode(descuento).getOff(); 
+        }
+           
         Pedido pedido = new Pedido(cuenta, carrito, delivery, adress, descuento, descuentoOff, metodoPago);
         for (ViniloCarrito viniloCarrito : carritoService.getCarritoById(cuenta.getCartId()).get().getCart()) {
         	Optional<Vinilo> viniloOpt = viniloRepository.findById(viniloCarrito.getViniloId());

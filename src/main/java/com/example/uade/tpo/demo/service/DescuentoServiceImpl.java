@@ -28,13 +28,13 @@ public class DescuentoServiceImpl implements DescuentoService {
     }
 
     @Override
-    public Descuento newDescuento(String code, double off) throws DescuentoDuplicateException {
+    public Descuento newDescuento(String code, double off) {
         Descuento vinilo = descuentoRepository.findByCode(code);
         if (vinilo == null) {
             Descuento newDescuento = new Descuento(code, off);
             return descuentoRepository.save(newDescuento);
         }
-        throw new DescuentoDuplicateException();
+        return null;
     }
     
     
