@@ -64,4 +64,6 @@ public class DescuentoServiceImpl implements DescuentoService {
 	public Descuento getDescuentoByCode(String Code) {
 		return descuentoRepository.findByCode(Code);
 	}
+
+    
 }

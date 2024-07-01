@@ -100,5 +100,7 @@ public class Cuenta {
 	public void setDescuentosUsados(List<String> descuentosUsados) {
 		this.descuentosUsados = descuentosUsados;
 	}
+
+	
 }
 

@@ -12,11 +12,14 @@ import org.springframework.stereotype.Service;
 import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.entity.Pedido;
 import com.example.uade.tpo.demo.entity.Vinilo;
+import com.example.uade.tpo.demo.exceptions.CuentaNotFoundException;
+import com.example.uade.tpo.demo.exceptions.DescuentoUsedException;
 import com.example.uade.tpo.demo.exceptions.PedidoNotFoundException;
 import com.example.uade.tpo.demo.model.ViniloCarrito;
 import com.example.uade.tpo.demo.model.ViniloDTO;
 import com.example.uade.tpo.demo.repository.PedidoRepository;
 import com.example.uade.tpo.demo.repository.ViniloRepository;
+
 
 @Service
 public class PedidoServiceImpl implements PedidoService {
@@ -33,6 +36,9 @@ public class PedidoServiceImpl implements PedidoService {
     @Autowired
     private DescuentoService descuentoService;
 
+    @Autowired
+    private CuentaService cuentaService;
+
     @Override
     public Page<Pedido> getPedidos(PageRequest pageable) {
         return pedidoRepository.findAll(pageable);
@@ -48,15 +54,22 @@ public class PedidoServiceImpl implements PedidoService {
         return pedidoRepository.findByUserId(id);
     }
     
+
     @Override
     public Pedido newPedido(Cuenta cuenta, boolean delivery, String adress, String descuento, String metodoPago) {
     	List<ViniloDTO> carrito = carritoService.getCarritoById(cuenta.getCartId()).get().getCartDTO();
         double descuentoOff = 0;
         if (descuentoService.getDescuentoByCode(descuento) != null){
-             descuentoOff = descuentoService.getDescuentoByCode(descuento).getOff(); 
+            descuentoOff = descuentoService.getDescuentoByCode(descuento).getOff(); 
         }
            
         Pedido pedido = new Pedido(cuenta, carrito, delivery, adress, descuento, descuentoOff, metodoPago);
+        try {
+            cuentaService.addDescuentoUsado(cuenta.getId(), descuento);
+        } catch (Exception e) {
+          
+        }
+
         for (ViniloCarrito viniloCarrito : carritoService.getCarritoById(cuenta.getCartId()).get().getCart()) {
         	Optional<Vinilo> viniloOpt = viniloRepository.findById(viniloCarrito.getViniloId());
         	if (viniloOpt.isPresent()) {
