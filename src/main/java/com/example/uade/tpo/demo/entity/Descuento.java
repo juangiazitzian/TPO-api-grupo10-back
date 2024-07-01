@@ -1,16 +1,11 @@
 package com.example.uade.tpo.demo.entity;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.Data;
 
-@Data
 @Entity
 public class Descuento {
 
@@ -22,14 +17,33 @@ public class Descuento {
     private String code;
 
     @Column(nullable = false)
-    private Double off;
+    private double off;
 
-    
     public Descuento() {
 	}
     
-	public Descuento(String code, Double off) {
+	public Descuento(String code, double off) {
 		this.code = code;
+		this.off = off;
+	}
+
+	public Long getId() {
+		return id;
+	}
+	public String getCode() {
+		return code;
+	}
+	public double getOff() {
+		return off;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public void setOff(double off) {
 		this.off = off;
 	}
 }

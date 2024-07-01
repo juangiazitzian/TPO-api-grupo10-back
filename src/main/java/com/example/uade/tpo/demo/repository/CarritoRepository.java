@@ -5,9 +5,9 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.uade.tpo.demo.entity.Factura;
+import com.example.uade.tpo.demo.entity.Carrito;
 
 @Repository
-public interface FacturaRepository extends JpaRepository<Factura, Long>{
-     Optional<Factura> findById(Long id);
+public interface CarritoRepository extends JpaRepository<Carrito, Long>{
+     Optional<Carrito> findById(Long id);
 }

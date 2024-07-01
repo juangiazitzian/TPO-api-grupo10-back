@@ -21,4 +21,14 @@ public interface ViniloService {
     Vinilo updateVinilo(Long id, String title, String subtitle, String image, Double price, String genero, Integer stock) throws ViniloNotFoundException;
 
     void deleteVinilo(Long id) throws ViniloNotFoundException;
+    
+    String getTitle(Long id);
+    
+    String getSubtitle(Long id);
+    
+    String getImage(Long id);
+    
+    Double getPrecio(Long id);
+    
+    String getGenero(Long id);
 }

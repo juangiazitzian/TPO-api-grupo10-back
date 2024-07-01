@@ -28,10 +28,7 @@ public class FacturaController {
 
     @Autowired
     private PedidoService pedidoService;
-
-
-
-
+    
     @GetMapping
     public ResponseEntity<Page<Factura>> getPedidos(@RequestParam(defaultValue = "0") Integer page,
                                                    @RequestParam(defaultValue = "10") Integer size) {
@@ -50,9 +47,8 @@ public class FacturaController {
     public ResponseEntity<Factura> createFactura(@RequestParam Long pedidoId
                                                 ) {
         try {
-            Long numFactura = 123456789l;
             Optional<Pedido> pedido = pedidoService.getPedidoById(pedidoId);
-            Factura newFactura = facturaService.newFactura(pedido.get(),numFactura);
+            Factura newFactura = facturaService.newFactura(pedido.get());
             return ResponseEntity.status(HttpStatus.CREATED).body(newFactura);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();

@@ -35,9 +35,9 @@ public class DescuentoController {
     }
 
     @GetMapping("/titulo/{code}")
-    public ResponseEntity<List<Descuento>> getDescuentoByTitulo(@PathVariable String code) {
-        List<Descuento> descuentos = descuentoService.getDescuentoByCode(code);
-        return ResponseEntity.ok().body(descuentos);
+    public ResponseEntity<Descuento> getDescuentoByTitulo(@PathVariable String code) {
+        Descuento descuento = descuentoService.getDescuentoByCode(code);
+        return ResponseEntity.ok().body(descuento);
     }
 
     @PostMapping("/add-Descuento")

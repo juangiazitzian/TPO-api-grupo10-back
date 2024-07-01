@@ -40,7 +40,7 @@ public class CuentaController {
     }
 
     @PostMapping("add-cuenta")
-    public ResponseEntity<Cuenta> createCuenta(@RequestParam String name, String lastName, String username, String password) {
+    public ResponseEntity<Cuenta> createCuenta(@RequestParam String name,												@RequestParam String lastName,												@RequestParam String username,												@RequestParam String password) {
         try {
             Cuenta newcuenta = cuentaService.newCuenta(name, lastName, username, password);
             return ResponseEntity.status(HttpStatus.CREATED).body(newcuenta);
@@ -75,14 +75,29 @@ public class CuentaController {
     }
 
     @PutMapping("/add-descuentoUsado/{id}")
-    public ResponseEntity<Cuenta> addDescuentoUsado(@PathVariable Long id,
-                                                @RequestParam String code) throws Exception {
+    public ResponseEntity<Cuenta> addDescuentoUsado(@PathVariable Long id, @RequestParam String code) throws Exception {
         try {
             cuentaService.addDescuentoUsado(id, code);
             return ResponseEntity.ok().build();
         } catch (CuentaNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+    
+    @PutMapping("/add-item-cart/")
+    public void addItemCart(@PathVariable String username, @RequestParam Long viniloId, @RequestParam int cantidad) {
+    	try {
+			cuentaService.addItem(username, viniloId, cantidad);
+		} catch (Exception e) {
+		}
+    }
+    
+    @PutMapping("/less-item-cart/")
+    public void lessItemCart(@PathVariable String username, @RequestParam Long viniloId, @RequestParam int cantidad) {
+    	try {
+			cuentaService.lessItem(username, viniloId, cantidad);
+		} catch (Exception e) {
+		}
     }
     
 }

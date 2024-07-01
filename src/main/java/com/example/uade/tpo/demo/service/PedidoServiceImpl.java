@@ -3,7 +3,6 @@ package com.example.uade.tpo.demo.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,10 +12,8 @@ import org.springframework.stereotype.Service;
 import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.entity.Pedido;
 import com.example.uade.tpo.demo.entity.Vinilo;
-import com.example.uade.tpo.demo.model.ViniloDTO;
-import com.example.uade.tpo.demo.exceptions.CuentaNotFoundException;
-import com.example.uade.tpo.demo.exceptions.DescuentoUsedException;
 import com.example.uade.tpo.demo.exceptions.PedidoNotFoundException;
+import com.example.uade.tpo.demo.model.ViniloCarrito;
 import com.example.uade.tpo.demo.repository.PedidoRepository;
 import com.example.uade.tpo.demo.repository.ViniloRepository;
 
@@ -25,7 +22,7 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Autowired
     private PedidoRepository pedidoRepository;
-
+    
     @Autowired
     private ViniloRepository viniloRepository;
 
@@ -43,34 +40,49 @@ public class PedidoServiceImpl implements PedidoService {
     public List<Pedido> getPedidosByUserId(Long id) {
         return pedidoRepository.findByUserId(id);
     }
-
-        public Pedido newPedido(List<ViniloDTO> cart, Cuenta cuenta, boolean delivery, String adress, boolean entregado, double subtotal, double descuento, double total, String metodoPago) {
-        Pedido pedido = new Pedido(cart, cuenta, delivery, adress, entregado, subtotal, descuento, total, metodoPago);
+    
+    @Override
+    public Pedido newPedido(Cuenta cuenta, boolean delivery, String adress, String descuento, String metodoPago) {
+        Pedido pedido = new Pedido(cuenta, delivery, adress, descuento, metodoPago);
+        CarritoService carritoService = new CarritoServiceImpl();
+        for (ViniloCarrito viniloCarrito : carritoService.getCarritoById(cuenta.getCartId()).get().getCart()) {
+        	Optional<Vinilo> viniloOpt = viniloRepository.findById(viniloCarrito.getViniloId());
+        	if (viniloOpt.isPresent()) {
+        		viniloOpt.get().setStock(viniloOpt.get().getStock() - viniloCarrito.getCantidad());
+        		viniloRepository.save(viniloOpt.get());
+        	}
+        }
         return pedidoRepository.save(pedido);
     }
 
-    public Pedido updatePedido(Long id, List<ViniloDTO> cart, Cuenta cuenta, Date date, boolean delivery, String adress,
-    Date deliveryDate, boolean entregado, double subtotal, double descuento, double total, String metodoPago) throws PedidoNotFoundException {
+    @Override
+    public Pedido updatePedido(Long id, boolean delivery, String adress, Date deliveryDate, boolean entregado, String metodoPago)
+    		throws PedidoNotFoundException {
         Optional<Pedido> optionalPedido = pedidoRepository.findById(id);
         if (optionalPedido.isPresent()) {
             Pedido pedido = optionalPedido.get();
-            pedido.setCart(cart);
-            pedido.setCuenta(cuenta);
-            pedido.setDate(date);
             pedido.setDeliveryDate(deliveryDate);
             pedido.setDelivery(delivery);
             pedido.setAdress(adress);
             pedido.setEntregado(entregado);
-            pedido.setSubtotal(subtotal);
-            pedido.setDescuento(descuento);
-            pedido.setTotal(total);
             pedido.setMetodoPago(metodoPago);
             return pedidoRepository.save(pedido);
         } else {
             throw new PedidoNotFoundException();
         }
     }
-
+    
+    @Override
+    public Pedido deliveredPedido(Long id) throws PedidoNotFoundException {
+        Optional<Pedido> optionalPedido = pedidoRepository.findById(id);
+        if (optionalPedido.isPresent()) {
+            Pedido pedido = optionalPedido.get();
+            pedido.setEntregado(!pedido.isEntregado());
+            return pedidoRepository.save(pedido);
+        } else {
+            throw new PedidoNotFoundException();
+        }
+    }
 
     @Override
     public void deletePedido(Long id) throws PedidoNotFoundException {
@@ -80,45 +92,4 @@ public class PedidoServiceImpl implements PedidoService {
             throw new PedidoNotFoundException();
         }
     }
-
-    
-    @Override
-    public void addCarrito(Long pedidoId, Integer cantidad, Long viniloId) throws Exception {
-        Optional<Pedido> optionalPedido = pedidoRepository.findById(pedidoId);
-        if (optionalPedido.isPresent()) {
-            Pedido pedido = optionalPedido.get();
-            List<ViniloDTO> cart = pedido.getCart();
-
-            Optional<Vinilo> optionalVinilo = viniloRepository.findById(viniloId);
-            if (!optionalVinilo.isPresent()){
-                throw new Exception("Vinilo no existe");
-            }
-
-            Vinilo vinilo = optionalVinilo.get();
-            if ( vinilo.getStock() - cantidad < 0 ){
-                throw new Exception("Limite de stock alcanzado");
-            }
-            else{
-                ViniloDTO newViniloDTO = new ViniloDTO( vinilo.getId(), vinilo.getTitle(), vinilo.getSubtitle(), vinilo.getImage(), vinilo.getPrice(), vinilo.getGenero(), cantidad);
-                cart.add(newViniloDTO);
-                pedido.setCart(cart);
-                pedidoRepository.save(pedido);
-            }
-            
-        } else {
-            throw new PedidoNotFoundException();
-        }
-    }
-
-    @Override
-    public List<ViniloDTO> getCarrito(Long pedidoId) throws PedidoNotFoundException {
-        Optional<Pedido> optionalPedido = pedidoRepository.findById(pedidoId);
-        if (optionalPedido.isPresent()) {
-            Pedido pedido = optionalPedido.get();
-            return pedido.getCart();
-        } else {
-            throw new PedidoNotFoundException();
-        }
-}
-
 }

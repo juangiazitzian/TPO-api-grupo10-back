@@ -1,10 +1,13 @@
 package com.example.uade.tpo.demo.entity;
-import java.util.Calendar;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import com.example.uade.tpo.demo.model.ViniloDTO;
+import com.example.uade.tpo.demo.service.CarritoService;
+import com.example.uade.tpo.demo.service.CarritoServiceImpl;
+import com.example.uade.tpo.demo.service.DescuentoServiceImpl;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -12,12 +15,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.Data;
 
-@Data
 @Entity
 public class Pedido {
 
@@ -50,8 +50,11 @@ public class Pedido {
 	@Column(nullable = false)
 	private double subtotal;
 	
-	@Column(nullable = false)
-	private double descuento;
+	@Column
+	private String descuento;
+	
+	@Column
+	private double descuentoOff;
 	
 	@Column(nullable = false)
 	private double total;
@@ -62,18 +65,18 @@ public class Pedido {
 	public Pedido() {
 	}
 	
-    public Pedido( List<ViniloDTO> cart, Cuenta cuenta, boolean delivery, String adress, boolean entregado,
-    		double subtotal, double descuento, double total, String metodoPago) {
+    public Pedido(Cuenta cuenta, boolean delivery, String adress, String descuento, String metodoPago) {
         this.cuenta = cuenta;
-        this.cart = cart;
+        this.cart = getCart(cuenta.getCartId());
         this.date = new Date();
         this.delivery = delivery;
         this.adress = adress;
         this.deliveryDate = getDeliveryDate(delivery);
-        this.entregado = entregado;
-        this.subtotal = subtotal;
+        this.entregado = false;
+        this.subtotal = getSubtotal(this.cart);
         this.descuento = descuento;
-        this.total = total;
+        this.descuentoOff = getDescuento(this.subtotal, cuenta.getDescuentosUsados(), descuento);
+        this.total = getTotal(this.subtotal, this.descuentoOff, delivery);
 		this.metodoPago = metodoPago;
 	}
     
@@ -86,4 +89,113 @@ public class Pedido {
     	}
     	return null;
     }
+    
+    private List<ViniloDTO> getCart(Long cartId) {
+    	CarritoService carritoService = new CarritoServiceImpl();
+    	return carritoService.getCarritoById(cartId).get().getCartDTO();
+    }
+    
+    private double getSubtotal(List<ViniloDTO> cart) {
+		double total = 0;
+		for (ViniloDTO vinilo : cart) {
+			total += (vinilo.getPrecio() * vinilo.getCantidad());
+		}
+		return total;
+	}
+    
+    private double getDescuento(double subtotal, List<String> descuentosUsados, String codDescuento) {
+    	double descuento = 0;
+    	if (descuentosUsados.contains(codDescuento) || codDescuento == null) {
+    		return descuento;
+    	}
+    	return subtotal / 100 * new DescuentoServiceImpl().getDescuentoByCode(codDescuento).getOff();
+    }
+    
+    private double getTotal(double subtotal, double descuento, boolean delivery) {
+    	double total = subtotal - descuento;
+    	if (delivery) {
+    		total += 20;
+    	}
+    	return total;
+    }
+
+	public Long getId() {
+		return id;
+	}
+	public List<ViniloDTO> getCart() {
+		return cart;
+	}
+	public Cuenta getCuenta() {
+		return cuenta;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public boolean isDelivery() {
+		return delivery;
+	}
+	public String getAdress() {
+		return adress;
+	}
+	public Date getDeliveryDate() {
+		return deliveryDate;
+	}
+	public boolean isEntregado() {
+		return entregado;
+	}
+	public double getSubtotal() {
+		return subtotal;
+	}
+	public String getDescuento() {
+		return descuento;
+	}
+	public double getDescuentoOff() {
+		return descuentoOff;
+	}
+	public double getTotal() {
+		return total;
+	}
+	public String getMetodoPago() {
+		return metodoPago;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setCart(List<ViniloDTO> cart) {
+		this.cart = cart;
+	}
+	public void setCuenta(Cuenta cuenta) {
+		this.cuenta = cuenta;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public void setDelivery(boolean delivery) {
+		this.delivery = delivery;
+	}
+	public void setAdress(String adress) {
+		this.adress = adress;
+	}
+	public void setDeliveryDate(Date deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+	public void setEntregado(boolean entregado) {
+		this.entregado = entregado;
+	}
+	public void setSubtotal(double subtotal) {
+		this.subtotal = subtotal;
+	}
+	public void setDescuento(String descuento) {
+		this.descuento = descuento;
+	}
+	public void setDescuento(double descuentoOff) {
+		this.descuentoOff = descuentoOff;
+	}
+	public void setTotal(double total) {
+		this.total = total;
+	}
+	public void setMetodoPago(String metodoPago) {
+		this.metodoPago = metodoPago;
+	}
 }

@@ -2,8 +2,6 @@ package com.example.uade.tpo.demo.controller;
 
 import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.entity.Pedido;
-import com.example.uade.tpo.demo.model.ViniloDTO;
-import com.example.uade.tpo.demo.exceptions.CuentaNotFoundException;
 import com.example.uade.tpo.demo.exceptions.PedidoNotFoundException;
 import com.example.uade.tpo.demo.service.CuentaService;
 import com.example.uade.tpo.demo.service.PedidoService;
@@ -27,8 +25,6 @@ public class PedidoController {
 
     @Autowired
     private CuentaService cuentaService;
-
-
 
     @GetMapping
     public ResponseEntity<Page<Pedido>> getPedidos(@RequestParam(defaultValue = "0") Integer page,
@@ -54,39 +50,30 @@ public class PedidoController {
     }
 
     @PostMapping("/add-pedido")
-    public ResponseEntity<Pedido> createPedido(@RequestBody List<ViniloDTO> cart, 
-                                               @RequestParam Long cuentaId,
+    public ResponseEntity<Pedido> createPedido(@RequestParam Long cuentaId,
                                                @RequestParam boolean delivery,
-                                               @RequestParam String adress, 
-                                               @RequestParam boolean entregado, 
-                                               @RequestParam double subtotal,
-                                               @RequestParam double descuento, 
-                                               @RequestParam double total, @RequestParam String metodoPago ) {
+                                               @RequestParam String adress,
+                                               @RequestParam String descuento,
+                                               @RequestParam String metodoPago ) {
         try {
-            // Busca la cuenta por ID
             Optional<Cuenta> optionalCuenta = cuentaService.getCuentaById(cuentaId);
             if (!optionalCuenta.isPresent()) {
                 return ResponseEntity.notFound().build();
             }
             Cuenta cuenta = optionalCuenta.get();
-    
-            Pedido newPedido = pedidoService.newPedido(cart, cuenta, delivery, adress, entregado, subtotal, descuento, total, metodoPago);
+            Pedido newPedido = pedidoService.newPedido(cuenta, delivery, adress, descuento, metodoPago);
             return ResponseEntity.status(HttpStatus.CREATED).body(newPedido);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
-    
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Pedido> updatePedido(@PathVariable Long id, @RequestBody List<ViniloDTO> cart,
-                                               @RequestParam Cuenta cuenta, @RequestParam Date date,
-                                               @RequestParam boolean delivery, @RequestParam String adress,
-                                               @RequestParam Date deliveryDate, @RequestParam boolean entregado,
-                                               @RequestParam double subtotal, @RequestParam double descuento,
-                                               @RequestParam double total,  @RequestParam String metodoPago) {
+    public ResponseEntity<Pedido> updatePedido(@PathVariable Long id, @RequestParam boolean delivery,
+    											@RequestParam String adress, @RequestParam Date deliveryDate,
+    											@RequestParam boolean entregado, @RequestParam String metodoPago) {
         try {
-            Pedido updatedPedido = pedidoService.updatePedido(id, cart, cuenta, date, delivery, adress, deliveryDate, entregado, subtotal, descuento, total, metodoPago);
+            Pedido updatedPedido = pedidoService.updatePedido(id, delivery, adress, deliveryDate, entregado, metodoPago);
             return ResponseEntity.ok(updatedPedido);
         } catch (PedidoNotFoundException e) {
             return ResponseEntity.notFound().build();
@@ -103,18 +90,5 @@ public class PedidoController {
         } catch (PedidoNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
-    }
-
-    
-    @PutMapping("/add-carrito/{id}")
-    public ResponseEntity<Pedido> addCarrito(@RequestParam Long id,
-                                        @RequestParam Integer cantidad,
-                                        @RequestParam Long viniloId) {
-            try {
-                pedidoService.addCarrito(id, cantidad, viniloId);
-                return ResponseEntity.ok().build();
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-            }
     }
 }

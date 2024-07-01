@@ -1,13 +1,11 @@
 package com.example.uade.tpo.demo.service;
 
-import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.entity.Descuento;
 import com.example.uade.tpo.demo.exceptions.DescuentoNotFoundException;
 import com.example.uade.tpo.demo.exceptions.DescuentoDuplicateException;
@@ -24,19 +22,15 @@ public class DescuentoServiceImpl implements DescuentoService {
         return descuentoRepository.findAll(pageable);
     }
     
-    public List<Descuento> getDescuentoByTitulo(String code) {
-        return descuentoRepository.findByCode(code);
-    }
-
     @Override
     public Optional<Descuento> getDescuentoById(Long id) {
         return descuentoRepository.findById(id);
     }
 
     @Override
-    public Descuento newDescuento(String code,Double off) throws DescuentoDuplicateException {
-        List<Descuento> vinilos = descuentoRepository.findByCode(code);
-        if (vinilos.isEmpty()) {
+    public Descuento newDescuento(String code, double off) throws DescuentoDuplicateException {
+        Descuento vinilo = descuentoRepository.findByCode(code);
+        if (vinilo == null) {
             Descuento newDescuento = new Descuento(code, off);
             return descuentoRepository.save(newDescuento);
         }
@@ -45,7 +39,7 @@ public class DescuentoServiceImpl implements DescuentoService {
     
     
     @Override
-    public Descuento updateDescuento(Long id, String code, Double off) throws DescuentoNotFoundException {
+    public Descuento updateDescuento(Long id, String code, double off) throws DescuentoNotFoundException {
         Optional<Descuento> optionalDescuento = descuentoRepository.findById(id);
         if (optionalDescuento.isPresent()) {
             Descuento Descuento = optionalDescuento.get();
@@ -67,7 +61,7 @@ public class DescuentoServiceImpl implements DescuentoService {
     }
 
 	@Override
-	public List<Descuento> getDescuentoByCode(String Code) {
+	public Descuento getDescuentoByCode(String Code) {
 		return descuentoRepository.findByCode(Code);
 	}
 }

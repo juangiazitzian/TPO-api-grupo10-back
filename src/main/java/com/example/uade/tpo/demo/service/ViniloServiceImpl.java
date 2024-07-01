@@ -7,12 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.example.uade.tpo.demo.entity.Cuenta;
-import com.example.uade.tpo.demo.entity.Vinilo;
 import com.example.uade.tpo.demo.entity.Vinilo;
 import com.example.uade.tpo.demo.exceptions.ViniloNotFoundException;
 import com.example.uade.tpo.demo.exceptions.ViniloDuplicateException;
-import com.example.uade.tpo.demo.exceptions.ViniloNotFoundException;
 import com.example.uade.tpo.demo.repository.ViniloRepository;
 
 @Service
@@ -70,5 +67,35 @@ public class ViniloServiceImpl implements ViniloService {
         } else {
             throw new ViniloNotFoundException();
         }
+    }
+    
+    @Override
+    public String getTitle(Long id) {
+    	Vinilo vinilo = viniloRepository.findById(id).get();
+        return vinilo.getTitle();
+    }
+
+    @Override
+    public String getSubtitle(Long id) {
+        Vinilo vinilo = viniloRepository.findById(id).get();
+        return vinilo.getSubtitle();
+    }
+
+    @Override
+    public String getImage(Long id) {
+    	Vinilo vinilo = viniloRepository.findById(id).get();
+        return vinilo.getImage();
+    }
+
+    @Override
+    public Double getPrecio(Long id) {
+    	Vinilo vinilo = viniloRepository.findById(id).get();
+        return vinilo.getPrice();
+    }
+
+    @Override
+    public String getGenero(Long id) {
+    	Vinilo vinilo = viniloRepository.findById(id).get();
+        return vinilo.getGenero();
     }
 }

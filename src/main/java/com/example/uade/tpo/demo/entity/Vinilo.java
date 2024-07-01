@@ -5,12 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Data;
 
-@Data
 @Entity
-
 public class Vinilo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,7 +41,48 @@ public class Vinilo {
         this.genero = genero;
         this.stock = stock;
     }
-    
-    
+
+	public Long getId() {
+		return id;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public String getSubtitle() {
+		return subtitle;
+	}
+	public String getImage() {
+		return image;
+	}
+	public Double getPrice() {
+		return price;
+	}
+	public String getGenero() {
+		return genero;
+	}
+	public int getStock() {
+		return stock;
+	}
 	
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public void setSubtitle(String subtitle) {
+		this.subtitle = subtitle;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+	public void setStock(int stock) {
+		this.stock = stock;
+	}
 }

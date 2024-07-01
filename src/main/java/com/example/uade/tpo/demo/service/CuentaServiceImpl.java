@@ -1,6 +1,5 @@
 package com.example.uade.tpo.demo.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +7,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.example.uade.tpo.demo.entity.Carrito;
 import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.exceptions.CuentaDuplicateException;
 import com.example.uade.tpo.demo.exceptions.CuentaNotFoundException;
 import com.example.uade.tpo.demo.exceptions.DescuentoUsedException;
+import com.example.uade.tpo.demo.repository.CarritoRepository;
 import com.example.uade.tpo.demo.repository.CuentaRepository;
 
 @Service
@@ -19,6 +20,9 @@ public class CuentaServiceImpl implements CuentaService {
 
     @Autowired
     private CuentaRepository cuentaRepository;
+    
+    @Autowired
+    private CarritoRepository carritoRepository;
 
     @Override
     public Page<Cuenta> getCuentas(PageRequest pageable) {
@@ -41,7 +45,7 @@ public class CuentaServiceImpl implements CuentaService {
         if (existingCuenta.isPresent()) {
             throw new CuentaDuplicateException();
         } else {
-            Cuenta newCuenta = new Cuenta(name, lastName, username, password, null);
+            Cuenta newCuenta = new Cuenta(name, lastName, username, password);
             return cuentaRepository.save(newCuenta);
         }
     }
@@ -60,6 +64,7 @@ public class CuentaServiceImpl implements CuentaService {
             throw new CuentaNotFoundException();
         }
     }
+    
     @Override
     public void deleteCuenta(Long id) throws CuentaNotFoundException {
         if (cuentaRepository.existsById(id)) {
@@ -68,22 +73,37 @@ public class CuentaServiceImpl implements CuentaService {
             throw new CuentaNotFoundException();
         }
     }
+    
+    @Override
+    public void addItem(String username, Long viniloId, int cantidad) throws Exception {
+    	Cuenta cuenta = cuentaRepository.findByUsername(username).get();
+        Carrito carrito = carritoRepository.findById(cuenta.getCartId()).get();
+        carrito.addToCart(viniloId, cantidad);
+        carritoRepository.save(carrito);
+    }
+    
+    @Override
+    public void lessItem(String username, Long viniloId, int cantidad) throws Exception {
+    	Cuenta cuenta = cuentaRepository.findByUsername(username).get();
+        Carrito carrito = carritoRepository.findById(cuenta.getCartId()).get();
+        carrito.lessToCart(viniloId, cantidad);
+        carritoRepository.save(carrito);
+    }
 
     @Override
-    public void addDescuentoUsado(Long cuentaId, String code)
-            throws DescuentoUsedException, CuentaNotFoundException, Exception {
-                Optional<Cuenta> optionalCuenta = cuentaRepository.findById(cuentaId);
-                if (optionalCuenta.isPresent()) {
-                    Cuenta cuenta = optionalCuenta.get();
-                    List<String> descuentos = cuenta.getDescuentosUsados();
-                    if (descuentos.contains(code)) {
-                        throw new DescuentoUsedException();
-                    }
-                    descuentos.add(code);
-                    cuenta.setDescuentosUsados(descuentos);
-                    cuentaRepository.save(cuenta);
-                } else {
-                    throw new CuentaNotFoundException();
-                }
+    public void addDescuentoUsado(Long cuentaId, String code) throws DescuentoUsedException, CuentaNotFoundException, Exception {
+        Optional<Cuenta> optionalCuenta = cuentaRepository.findById(cuentaId);
+        if (optionalCuenta.isPresent()) {
+            Cuenta cuenta = optionalCuenta.get();
+            List<String> descuentos = cuenta.getDescuentosUsados();
+            if (descuentos.contains(code)) {
+                throw new DescuentoUsedException();
+            }
+            descuentos.add(code);
+            cuenta.setDescuentosUsados(descuentos);
+            cuentaRepository.save(cuenta);
+        } else {
+            throw new CuentaNotFoundException();
+        }
     }
 }

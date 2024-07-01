@@ -21,6 +21,10 @@ public interface CuentaService {
     Cuenta updateCuenta(Long id, String name, String lastName, String username, String password) throws CuentaNotFoundException;
 
     void deleteCuenta(Long id) throws CuentaNotFoundException;
+    
+    void addItem(String username, Long viniloId, int cantidad) throws Exception;
+    
+    void lessItem(String username, Long viniloId, int cantidad) throws Exception;
 
     void addDescuentoUsado(Long cuentaId, String code) throws DescuentoUsedException, CuentaNotFoundException, Exception;
 }
