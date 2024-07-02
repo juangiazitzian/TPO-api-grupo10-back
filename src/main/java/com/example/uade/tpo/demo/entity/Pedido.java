@@ -29,7 +29,7 @@ public class Pedido {
     private List<ViniloDTO> cart;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private Cuenta cuenta;
 	
 	@Column(nullable = false)
@@ -41,7 +41,7 @@ public class Pedido {
 	@Column
 	private String adress;
 	
-	@Column(nullable = false)
+	@Column (nullable = false)
 	private Date deliveryDate;
 
 	@Column(nullable = false)
@@ -87,7 +87,7 @@ public class Pedido {
     		calendario.add(Calendar.DAY_OF_YEAR, 2);
     		return calendario.getTime();
     	}
-    	return null;
+    	return this.getDate();
     }
     
     private double getSubtotal(List<ViniloDTO> cart) {

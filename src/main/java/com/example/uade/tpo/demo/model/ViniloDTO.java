@@ -5,9 +5,8 @@ import lombok.Data;
 
 import com.example.uade.tpo.demo.service.ViniloServiceImpl;
 
-@Embeddable
 @Data
-
+@Embeddable
 public class ViniloDTO {
 	
 	private Long viniloId;
@@ -18,6 +17,7 @@ public class ViniloDTO {
 	private String genero;
     private int cantidad = 1;
     
+	public ViniloDTO(){}
 	public ViniloDTO(Long viniloId, String title, String subtitle, String image, double precio, String genero, int cantidad) {
 		this.viniloId = viniloId;
 		this.title = title;

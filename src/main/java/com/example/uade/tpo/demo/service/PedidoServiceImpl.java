@@ -89,7 +89,13 @@ public class PedidoServiceImpl implements PedidoService {
         		viniloRepository.save(viniloOpt.get());
         	}
         }
-        return pedidoRepository.save(pedido);
+         System.out.println("Pedido a guardar: " + pedido);
+        try{
+            return pedidoRepository.save(pedido);
+        } catch (Exception e){
+            System.out.println("no se guardo el pedido");
+            return pedido;
+        }
     }
 
     @Override
