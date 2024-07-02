@@ -1,5 +1,6 @@
 package com.example.uade.tpo.demo.entity;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -87,7 +88,8 @@ public class Pedido {
     		calendario.add(Calendar.DAY_OF_YEAR, 2);
     		return calendario.getTime();
     	}
-    	return this.getDate();
+		
+    	return new Date();
     }
     
     private double getSubtotal(List<ViniloDTO> cart) {
