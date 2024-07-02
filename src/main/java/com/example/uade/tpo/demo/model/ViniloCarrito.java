@@ -8,6 +8,8 @@ public class ViniloCarrito {
 	private Long viniloId;
     private int cantidad = 1;
 
+	public ViniloCarrito() {
+    }
     public ViniloCarrito(Long ViniloId, int cantidad) {
     	this.viniloId = ViniloId;
         this.cantidad = cantidad;
