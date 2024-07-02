@@ -9,6 +9,8 @@ import com.example.uade.tpo.demo.model.ViniloCarrito;
 import com.example.uade.tpo.demo.repository.CarritoRepository;
 import com.example.uade.tpo.demo.repository.CuentaRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class CarritoServiceImpl implements CarritoService {
 
@@ -32,6 +34,7 @@ public class CarritoServiceImpl implements CarritoService {
         return carritoRepository.findById(cuentaRepository.getById(id).getCartId());
     }
     
+    @Transactional(rollbackOn = Throwable.class)
     @Override
     public Long newCarrito() {
     	Carrito newCarrito = new Carrito();

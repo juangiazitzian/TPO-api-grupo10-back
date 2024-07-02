@@ -11,6 +11,8 @@ import com.example.uade.tpo.demo.entity.Descuento;
 import com.example.uade.tpo.demo.exceptions.DescuentoNotFoundException;
 import com.example.uade.tpo.demo.repository.DescuentoRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class DescuentoServiceImpl implements DescuentoService {
 
@@ -32,6 +34,7 @@ public class DescuentoServiceImpl implements DescuentoService {
         return descuentoRepository.findById(id);
     }
 
+    @Transactional(rollbackOn = Throwable.class)
     @Override
     public Descuento newDescuento(String code, double off) {
         Descuento vinilo = descuentoRepository.findByCode(code);

@@ -11,6 +11,8 @@ import com.example.uade.tpo.demo.entity.Factura;
 import com.example.uade.tpo.demo.entity.Pedido;
 import com.example.uade.tpo.demo.repository.FacturaRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class FacturaServiceImpl implements FacturaService{
 
@@ -27,6 +29,7 @@ public class FacturaServiceImpl implements FacturaService{
         return facturaRepository.findById(id);
     }
 
+    @Transactional(rollbackOn = Throwable.class)
     @Override
     public Factura newFactura(Pedido pedido) {
         Factura newFactura = new Factura(pedido);

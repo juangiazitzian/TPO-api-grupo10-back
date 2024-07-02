@@ -20,6 +20,8 @@ import com.example.uade.tpo.demo.model.ViniloCarrito;
 import com.example.uade.tpo.demo.repository.CarritoRepository;
 import com.example.uade.tpo.demo.repository.CuentaRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class CuentaServiceImpl implements CuentaService {
 
@@ -53,6 +55,7 @@ public class CuentaServiceImpl implements CuentaService {
         return cuentaRepository.findByUsername(username);
     }
 
+    @Transactional(rollbackOn = Throwable.class)
     @Override
     public Cuenta newCuenta(String name, String lastName, String username, String password, Role role) throws CuentaDuplicateException {
         Optional<Cuenta> existingCuenta = cuentaRepository.findByUsername(username);

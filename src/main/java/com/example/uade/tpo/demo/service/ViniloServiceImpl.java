@@ -13,6 +13,8 @@ import com.example.uade.tpo.demo.model.ViniloUpdateDTO;
 import com.example.uade.tpo.demo.exceptions.ViniloDuplicateException;
 import com.example.uade.tpo.demo.repository.ViniloRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class ViniloServiceImpl implements ViniloService {
 
@@ -34,6 +36,7 @@ public class ViniloServiceImpl implements ViniloService {
         return viniloRepository.findById(id);
     }
 
+    @Transactional(rollbackOn = Throwable.class)
     @Override
     public Vinilo newVinilo(String title, String subtitle, String image, Double price, String genero, int stock) throws ViniloDuplicateException {
         List<Vinilo> vinilos = viniloRepository.findByTitle(title);
