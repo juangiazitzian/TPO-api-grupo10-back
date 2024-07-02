@@ -50,13 +50,13 @@ public class PedidoController {
     }
 
     @PostMapping("/add-pedido")
-    public ResponseEntity<Pedido> createPedido(@RequestParam Long cuentaId,
+    public ResponseEntity<Pedido> createPedido(@RequestParam String username,
                                                @RequestParam boolean delivery,
                                                @RequestParam String adress,
                                                @RequestParam String descuento,
                                                @RequestParam String metodoPago ) {
         try {
-            Optional<Cuenta> optionalCuenta = cuentaService.getCuentaById(cuentaId);
+            Optional<Cuenta> optionalCuenta = cuentaService.getCuentaByUsername(username);
             if (!optionalCuenta.isPresent()) {
                 return ResponseEntity.notFound().build();
             }
