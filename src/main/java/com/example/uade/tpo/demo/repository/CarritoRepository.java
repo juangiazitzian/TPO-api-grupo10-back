@@ -9,5 +9,5 @@ import com.example.uade.tpo.demo.entity.Carrito;
 
 @Repository
 public interface CarritoRepository extends JpaRepository<Carrito, Long>{
-     Optional<Carrito> findById(Long id);
+    Optional<Carrito> findById(Long id);
 }

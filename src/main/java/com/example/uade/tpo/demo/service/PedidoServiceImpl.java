@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.example.uade.tpo.demo.entity.Carrito;
 import com.example.uade.tpo.demo.entity.Cuenta;
 import com.example.uade.tpo.demo.entity.Pedido;
 import com.example.uade.tpo.demo.entity.Vinilo;
@@ -18,8 +19,11 @@ import com.example.uade.tpo.demo.exceptions.DescuentoUsedException;
 import com.example.uade.tpo.demo.exceptions.PedidoNotFoundException;
 import com.example.uade.tpo.demo.model.ViniloCarrito;
 import com.example.uade.tpo.demo.model.ViniloDTO;
+import com.example.uade.tpo.demo.repository.CarritoRepository;
 import com.example.uade.tpo.demo.repository.PedidoRepository;
 import com.example.uade.tpo.demo.repository.ViniloRepository;
+
+import jakarta.transaction.Transactional;
 
 
 @Service
@@ -30,6 +34,9 @@ public class PedidoServiceImpl implements PedidoService {
     
     @Autowired
     private ViniloRepository viniloRepository;
+
+    @Autowired
+    private CarritoRepository carritoRepository;
     
     @Autowired
     private ViniloService viniloService;
@@ -58,7 +65,7 @@ public class PedidoServiceImpl implements PedidoService {
         return pedidoRepository.findByUserId(id);
     }
     
-
+    @Transactional(rollbackOn = Throwable.class)
     @Override
     public Pedido newPedido(Cuenta cuenta, boolean delivery, String adress, String descuento, String metodoPago) {
 		List<ViniloDTO> vinilosDTO = new ArrayList<>();
@@ -91,7 +98,16 @@ public class PedidoServiceImpl implements PedidoService {
         }
          System.out.println("Pedido a guardar: " + pedido);
         try{
-            return pedidoRepository.save(pedido);
+
+             Pedido savedPedido = pedidoRepository.save(pedido);
+            
+            // Vacía el carrito del usuario
+            Carrito carrito = carritoService.getCarritoById(cuenta.getCartId()).get();
+            carrito.getCart().clear();  // Limpia el carrito
+            carritoService.getCarritoById(cuenta.getCartId()).get().setCart(new ArrayList<>());  // Reasigna una lista vacía al carrito
+            carritoRepository.save(carrito);  // Guarda los cambios en el carrito
+            
+            return savedPedido;
         } catch (Exception e){
             System.out.println("no se guardo el pedido");
             return pedido;
