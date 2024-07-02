@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import com.example.uade.tpo.demo.entity.Vinilo;
 import com.example.uade.tpo.demo.exceptions.ViniloDuplicateException;
 import com.example.uade.tpo.demo.exceptions.ViniloNotFoundException;
+import com.example.uade.tpo.demo.model.ViniloUpdateDTO;
 
 public interface ViniloService {
     Page<Vinilo> getVinilos(PageRequest pageRequest);
@@ -18,7 +19,7 @@ public interface ViniloService {
 
     Vinilo newVinilo(String title, String subtitle, String image, Double price, String genero, int stock) throws ViniloDuplicateException;
     
-    Vinilo updateVinilo(Long id, String title, String subtitle, String image, Double price, String genero, int stock) throws ViniloNotFoundException;
+    Vinilo updateVinilo(Long id, ViniloUpdateDTO viniloUpdateDTO) throws ViniloNotFoundException;
 
     void deleteVinilo(Long id) throws ViniloNotFoundException;
     
@@ -31,4 +32,5 @@ public interface ViniloService {
     Double getPrecio(Long id);
     
     String getGenero(Long id);
+
 }

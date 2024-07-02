@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.uade.tpo.demo.entity.Vinilo;
 import com.example.uade.tpo.demo.exceptions.ViniloNotFoundException;
+import com.example.uade.tpo.demo.model.ViniloUpdateDTO;
 import com.example.uade.tpo.demo.exceptions.ViniloDuplicateException;
 import com.example.uade.tpo.demo.repository.ViniloRepository;
 
@@ -45,20 +46,13 @@ public class ViniloServiceImpl implements ViniloService {
     
     
     @Override
-    public Vinilo updateVinilo(Long id, String title, String subtitle, String image, Double price, String genero, int stock) throws ViniloNotFoundException {
-        Optional<Vinilo> optionalVinilo = viniloRepository.findById(id);
-        if (optionalVinilo.isPresent()) {
-            Vinilo vinilo = optionalVinilo.get();
-            vinilo.setTitle(title);
-            vinilo.setSubtitle(subtitle);
-            vinilo.setImage(image);
-            vinilo.setPrice(price);
-            vinilo.setGenero(genero);
-            vinilo.setStock(stock);
-            return viniloRepository.save(vinilo);
-        } else {
-            throw new ViniloNotFoundException();
-        }
+    public Vinilo updateVinilo(Long id, ViniloUpdateDTO viniloUpdateDTO) throws ViniloNotFoundException {
+        Vinilo optionalVinilo = viniloRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        viniloUpdateDTO.getStock().ifPresent(optionalVinilo::setStock);
+        viniloUpdateDTO.getPrice().ifPresent(optionalVinilo::setPrice);
+        viniloUpdateDTO.getImage().ifPresent(optionalVinilo::setImage);
+        return viniloRepository.save(optionalVinilo);
+
     }
     
     @Override

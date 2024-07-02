@@ -2,6 +2,7 @@ package com.example.uade.tpo.demo.controller;
 
 import com.example.uade.tpo.demo.entity.Vinilo;
 import com.example.uade.tpo.demo.exceptions.ViniloNotFoundException;
+import com.example.uade.tpo.demo.model.ViniloUpdateDTO;
 import com.example.uade.tpo.demo.exceptions.ViniloDuplicateException;
 import com.example.uade.tpo.demo.service.ViniloService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,14 +55,16 @@ public class ViniloController {
 
     @PutMapping("/update/{id}")
         public ResponseEntity<Vinilo> updateVinilo(@PathVariable Long id,
-                                                @RequestParam String title,
-                                                @RequestParam String subtitle,
                                                 @RequestParam String image,
                                                 @RequestParam Double price,
-                                                @RequestParam String genero,
                                                 @RequestParam int stock) {
         try {
-            Vinilo updatedVinilo = viniloService.updateVinilo(id, title, subtitle, image, price, genero, stock);
+            ViniloUpdateDTO viniloDTO = new ViniloUpdateDTO();
+            viniloDTO.setImage(Optional.ofNullable(image));
+            viniloDTO.setPrice(Optional.ofNullable(price));
+            viniloDTO.setStock(Optional.ofNullable(stock));
+
+            Vinilo updatedVinilo = viniloService.updateVinilo(id, viniloDTO);
             return ResponseEntity.ok(updatedVinilo);
         } catch (ViniloNotFoundException e) {
             return ResponseEntity.notFound().build();

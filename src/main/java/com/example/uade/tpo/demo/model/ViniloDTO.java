@@ -1,10 +1,13 @@
 package com.example.uade.tpo.demo.model;
 
 import jakarta.persistence.Embeddable;
+import lombok.Data;
 
 import com.example.uade.tpo.demo.service.ViniloServiceImpl;
 
 @Embeddable
+@Data
+
 public class ViniloDTO {
 	
 	private Long viniloId;
@@ -25,48 +28,6 @@ public class ViniloDTO {
 		this.cantidad = cantidad;
 	}
 	
-	public Long getViniloId() {
-		return viniloId;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public String getSubtitle() {
-		return subtitle;
-	}
-	public String getImage() {
-		return image;
-	}
-	public double getPrecio() {
-		return precio;
-	}
-	public String getGenero() {
-		return genero;
-	}
-	public int getCantidad() {
-		return cantidad;
-	}
 	
-	public void setViniloId(Long viniloId) {
-		this.viniloId = viniloId;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public void setSubtitle(String subtitle) {
-		this.subtitle = subtitle;
-	}
-	public void setImage(String image) {
-		this.image = image;
-	}
-	public void setPrecio(double precio) {
-		this.precio = precio;
-	}
-	public void setGenero(String genero) {
-		this.genero = genero;
-	}
-	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
-	}
 }
 
