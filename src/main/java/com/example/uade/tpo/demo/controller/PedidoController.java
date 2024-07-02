@@ -70,10 +70,10 @@ public class PedidoController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Pedido> updatePedido(@PathVariable Long id, @RequestParam boolean delivery,
-    											@RequestParam String adress, @RequestParam Date deliveryDate,
+    											@RequestParam String adress,
     											@RequestParam boolean entregado, @RequestParam String metodoPago) {
         try {
-            Pedido updatedPedido = pedidoService.updatePedido(id, delivery, adress, deliveryDate, entregado, metodoPago);
+            Pedido updatedPedido = pedidoService.updatePedido(id, delivery, adress, entregado, metodoPago);
             return ResponseEntity.ok(updatedPedido);
         } catch (PedidoNotFoundException e) {
             return ResponseEntity.notFound().build();

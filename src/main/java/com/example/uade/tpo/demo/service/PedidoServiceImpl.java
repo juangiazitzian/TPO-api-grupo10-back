@@ -99,12 +99,11 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public Pedido updatePedido(Long id, boolean delivery, String adress, Date deliveryDate, boolean entregado, String metodoPago)
+    public Pedido updatePedido(Long id, boolean delivery, String adress, boolean entregado, String metodoPago)
     		throws PedidoNotFoundException {
         Optional<Pedido> optionalPedido = pedidoRepository.findById(id);
         if (optionalPedido.isPresent()) {
             Pedido pedido = optionalPedido.get();
-            pedido.setDeliveryDate(deliveryDate);
             pedido.setDelivery(delivery);
             pedido.setAdress(adress);
             pedido.setEntregado(entregado);

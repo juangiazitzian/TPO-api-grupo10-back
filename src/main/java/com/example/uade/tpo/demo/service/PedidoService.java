@@ -19,7 +19,7 @@ public interface PedidoService {
 
     Pedido newPedido(Cuenta cuenta, boolean delivery, String adress, String descuento, String metodoPago);
 
-    Pedido updatePedido(Long id, boolean delivery, String adress, Date deliveryDate, boolean entregado, String metodoPago)
+    Pedido updatePedido(Long id, boolean delivery, String adress, boolean entregado, String metodoPago)
     		throws PedidoNotFoundException;
     
     Pedido deliveredPedido(Long id) throws PedidoNotFoundException;
