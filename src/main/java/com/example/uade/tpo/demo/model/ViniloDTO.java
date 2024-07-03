@@ -12,13 +12,13 @@ public class ViniloDTO {
 	private Long viniloId;
 	private String title;
 	private String subtitle;
-	private String image;
+	private byte[] image;
 	private double precio;
 	private String genero;
     private int cantidad = 1;
     
 	public ViniloDTO(){}
-	public ViniloDTO(Long viniloId, String title, String subtitle, String image, double precio, String genero, int cantidad) {
+	public ViniloDTO(Long viniloId, String title, String subtitle, byte[] image, double precio, String genero, int cantidad) {
 		this.viniloId = viniloId;
 		this.title = title;
 		this.subtitle = subtitle;

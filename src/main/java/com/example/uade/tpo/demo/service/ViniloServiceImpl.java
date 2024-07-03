@@ -38,7 +38,7 @@ public class ViniloServiceImpl implements ViniloService {
 
     @Transactional(rollbackOn = Throwable.class)
     @Override
-    public Vinilo newVinilo(String title, String subtitle, String image, Double price, String genero, int stock) throws ViniloDuplicateException {
+    public Vinilo newVinilo(String title, String subtitle, byte[] image, Double price, String genero, int stock) throws ViniloDuplicateException {
         List<Vinilo> vinilos = viniloRepository.findByTitle(title);
         if (vinilos.isEmpty()) {
             Vinilo newVinilo = new Vinilo(title, subtitle, image, price, genero, stock);
@@ -53,7 +53,6 @@ public class ViniloServiceImpl implements ViniloService {
         Vinilo optionalVinilo = viniloRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
         viniloUpdateDTO.getStock().ifPresent(optionalVinilo::setStock);
         viniloUpdateDTO.getPrice().ifPresent(optionalVinilo::setPrice);
-        viniloUpdateDTO.getImage().ifPresent(optionalVinilo::setImage);
         return viniloRepository.save(optionalVinilo);
 
     }
@@ -80,7 +79,7 @@ public class ViniloServiceImpl implements ViniloService {
     }
 
     @Override
-    public String getImage(Long id) {
+    public byte[] getImage(Long id) {
     	Vinilo vinilo = viniloRepository.findById(id).get();
         return vinilo.getImage();
     }

@@ -11,7 +11,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,8 +44,14 @@ public class ViniloController {
     }
 
     @PostMapping("/add-vinilo")
-    public ResponseEntity<Vinilo> createVinilo(@RequestParam String title, String subtitle, String image, Double price, String genero, int stock) {
+    public ResponseEntity<Vinilo> createVinilo(@RequestParam String title, 
+                                               @RequestParam String subtitle, 
+                                               @RequestParam("imageFile") MultipartFile file, 
+                                               @RequestParam Double price, 
+                                               @RequestParam String genero, 
+                                               @RequestParam int stock) throws IOException {
         try {
+            byte[] image = file.getBytes(); 
             Vinilo newVinilo = viniloService.newVinilo(
             		title, subtitle, image, price, genero, stock
             );
@@ -55,12 +63,11 @@ public class ViniloController {
 
     @PutMapping("/update/{id}")
         public ResponseEntity<Vinilo> updateVinilo(@PathVariable Long id,
-                                                @RequestParam String image,
+                                                @RequestParam byte[] image,
                                                 @RequestParam Double price,
                                                 @RequestParam int stock) {
         try {
             ViniloUpdateDTO viniloDTO = new ViniloUpdateDTO();
-            viniloDTO.setImage(Optional.ofNullable(image));
             viniloDTO.setPrice(Optional.ofNullable(price));
             viniloDTO.setStock(Optional.ofNullable(stock));
 
