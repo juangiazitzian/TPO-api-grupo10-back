@@ -65,7 +65,6 @@ public class ViniloController {
 
     @PutMapping("/update/{id}")
         public ResponseEntity<Vinilo> updateVinilo(@PathVariable Long id,
-                                                @RequestParam byte[] image,
                                                 @RequestParam Double price,
                                                 @RequestParam int stock) {
         try {
