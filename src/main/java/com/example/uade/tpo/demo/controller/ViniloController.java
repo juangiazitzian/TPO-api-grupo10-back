@@ -28,6 +28,7 @@ public class ViniloController {
     public ResponseEntity<Page<Vinilo>> getVinilos(@RequestParam(defaultValue = "0") Integer page,
                                                    @RequestParam(defaultValue = "10") Integer size) {
         Page<Vinilo> vinilos = viniloService.getVinilos(PageRequest.of(page, size));
+        System.out.println(vinilos);
         return ResponseEntity.ok().body(vinilos);
     }
 
@@ -46,6 +47,7 @@ public class ViniloController {
     @PostMapping("/add-vinilo")
     public ResponseEntity<Vinilo> createVinilo(@RequestParam String title, 
                                                @RequestParam String subtitle, 
+                                               @RequestParam String description, 
                                                @RequestParam("imageFile") MultipartFile file, 
                                                @RequestParam Double price, 
                                                @RequestParam String genero, 
@@ -53,7 +55,7 @@ public class ViniloController {
         try {
             byte[] image = file.getBytes(); 
             Vinilo newVinilo = viniloService.newVinilo(
-            		title, subtitle, image, price, genero, stock
+            		title, subtitle, description, image, price, genero, stock
             );
             return ResponseEntity.status(HttpStatus.CREATED).body(newVinilo);
         } catch (ViniloDuplicateException e) {

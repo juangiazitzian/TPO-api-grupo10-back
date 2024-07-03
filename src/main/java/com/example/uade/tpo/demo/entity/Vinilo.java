@@ -22,6 +22,9 @@ public class Vinilo {
     @Column(nullable = false)
     private String subtitle;
 
+    @Column(nullable = false)
+    private String description;
+
 	@Lob
     @Column(columnDefinition="LONGBLOB")
     private byte[] image;
@@ -38,9 +41,10 @@ public class Vinilo {
     public Vinilo() {
     }
     
-    public Vinilo(String title, String subtitle, byte[] image, Double price, String genero, int stock) {
+    public Vinilo(String title, String subtitle,String description, byte[] image, Double price, String genero, int stock) {
         this.title = title;
         this.subtitle = subtitle;
+        this.description = description;
         this.image = image;
         this.price = price;
         this.genero = genero;
