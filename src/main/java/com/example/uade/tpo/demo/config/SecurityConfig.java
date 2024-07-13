@@ -43,9 +43,6 @@ public class SecurityConfig {
                                                 .requestMatchers("/api/pedidos").hasAnyAuthority(Role.ADMIN.name())
                                                 .requestMatchers("/api/pedidos").hasAnyAuthority(Role.ADMIN.name())
                                                 
-                                                .requestMatchers("/api/vinilos/add-vinilo").hasAnyAuthority(Role.ADMIN.name())
-                                                .requestMatchers("/api/vinilos/update/{id}").hasAnyAuthority(Role.ADMIN.name())
-                                                .requestMatchers("/api/vinilos/delete/{id}").hasAnyAuthority(Role.ADMIN.name())
                                                 .anyRequest().permitAll()
                                                 )
                                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
