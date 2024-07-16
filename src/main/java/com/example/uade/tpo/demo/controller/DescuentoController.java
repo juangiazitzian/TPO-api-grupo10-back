@@ -32,11 +32,15 @@ public class DescuentoController {
         Optional<Descuento> Descuento = descuentoService.getDescuentoById(id);
         return Descuento.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
+@CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/titulo/{code}")
     public ResponseEntity<Descuento> getDescuentoByTitulo(@PathVariable String code) {
         Descuento descuento = descuentoService.getDescuentoByCode(code);
-        return ResponseEntity.ok().body(descuento);
+        if (descuento != null) {
+            return ResponseEntity.ok().body(descuento);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/add-descuento")
